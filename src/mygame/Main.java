@@ -12,10 +12,12 @@ import com.jme3.scene.shape.Box;
 import com.jme3.system.AppSettings;
 import combatant.component.Combatant;
 import combatant.graphics.CombatantNode;
-import configuration.GameState;
-import java.awt.Dialog;
-import java.awt.Dimension;
-import javax.swing.JFrame;
+import graphics.progressbar.stat.EnduranceBar;
+import graphics.progressbar.stat.HealthBar;
+import graphics.progressbar.stat.ManaBar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import static mygame.Main.app;
 
 /**
  * test
@@ -23,8 +25,9 @@ import javax.swing.JFrame;
  */
 public class Main extends SimpleApplication {
 
-    private static GameState state = new GameState();
     public static Main app;
+    public static String unshadedMat = "Common/MatDefs/Misc/Unshaded.j3md";
+    public CombatantNode combatant;
     
     public static void main(String[] args) {
         app = new Main();
@@ -34,7 +37,10 @@ public class Main extends SimpleApplication {
         app.setSettings(settings);
         app.settings.setWidth(1280);
         app.settings.setHeight(800);
+        app.settings.setSamples(32);
         app.start();
+        
+
     }
 
     @Override
@@ -57,19 +63,33 @@ public class Main extends SimpleApplication {
         
         Node battleground = new Node("BattleGround");
         
-        CombatantNode combatant = new CombatantNode(Combatant.createDefault("Dude Man"));
+        combatant = new CombatantNode(Combatant.createDefault("Dude Man"));
+        combatant.getHealthBar().setValue(100);
+        combatant.getHealthBar().update();
+        combatant.getManaBar().setValue(100);
+        combatant.getManaBar().update();
+        combatant.getSkillBar().setValue(100);
+        combatant.getSkillBar().update();
         combatant.setLocalTranslation(4, .75f, -2);
         battleground.attachChild(combatant);
         
         CombatantNode combatant2 = new CombatantNode(Combatant.createDefault("Dude Man"));
+        combatant2.getHealthBar().setValue(40);
+        combatant2.getHealthBar().update();
         combatant2.setLocalTranslation(4, .75f, 2);
         battleground.attachChild(combatant2);
 
         CombatantNode combatant3 = new CombatantNode(Combatant.createDefault("Dude Man"));
+        combatant3.getSkillBar().setValue(100);
+        combatant3.getSkillBar().update();
         combatant3.setLocalTranslation(-4, .75f, -2);
         battleground.attachChild(combatant3);
         
         CombatantNode combatant4 = new CombatantNode(Combatant.createDefault("Dude Man"));
+        combatant4.getManaBar().setValue(100);
+        combatant4.getManaBar().update(); 
+        combatant4.getHealthBar().setValue(50);
+        combatant4.getHealthBar().update();
         combatant4.setLocalTranslation(-4, .75f, 2);
         battleground.attachChild(combatant4);
         
@@ -80,31 +100,43 @@ public class Main extends SimpleApplication {
         rootNode.attachChild(backdropGeom);
         rootNode.attachChild(battleground);
         
+        Box menu = new Box(1, 1, 1);
+        Geometry geom = new Geometry("Menu", menu);
+        Material mat4 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat4.setColor("Color", ColorRGBA.Gray);
+ 
     }
 
     @Override
     public void simpleUpdate(float tpf) {
-        //TODO: add update code
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        HealthBar bar = combatant.getHealthBar();
+        ManaBar manabar = combatant.getManaBar();
+        EnduranceBar skillBar = combatant.getSkillBar();
+        System.out.println("Health Color: " + bar.getFilledColor());
+        bar.decrement();
+        manabar.decrement();
+        skillBar.decrement();
+        
     }
 
     @Override
     public void simpleRender(RenderManager rm) {
         //TODO: add render code
-    }
-    
-    private void showStartupMenu(){
-        JFrame battleMenu = new JFrame();
-        battleMenu.setModalExclusionType(Dialog.ModalExclusionType.APPLICATION_EXCLUDE);
-        battleMenu.setSize(new Dimension(400, 600));
-        battleMenu.setVisible(true);
-        battleMenu.setAlwaysOnTop(true);
-        battleMenu.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         
-        
+ 
     }
     
     @Override 
     public AssetManager getAssetManager(){
         return super.getAssetManager();
+    }
+    
+    public Material getUnshadedMat() {
+        return new Material(getAssetManager(), Main.unshadedMat);
     }
 }

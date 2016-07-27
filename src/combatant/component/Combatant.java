@@ -13,6 +13,10 @@ public class Combatant {
     private String name;
     private int maxHealth;
     private int currentHealth;
+    private int maxMana = 100;
+    private int currentMana = 50;
+    private int END = 100;
+    private int currentEND = 50;
     private int SPD;
     private int ATK;
     private int DEF;
@@ -76,6 +80,38 @@ public class Combatant {
 
     public void setCurrentHealth(int currentHealth) {
         this.currentHealth = currentHealth;
+    }
+
+    public int getMaxMana() {
+        return maxMana;
+    }
+
+    public void setMaxMana(int maxMana) {
+        this.maxMana = maxMana;
+    }
+
+    public int getCurrentMana() {
+        return currentMana;
+    }
+
+    public void setCurrentMana(int currentMana) {
+        this.currentMana = currentMana;
+    }
+
+    public int getMaxSkill() {
+        return END;
+    }
+
+    public void setMaxSkill(int maxSkill) {
+        this.END = maxSkill;
+    }
+
+    public int getCurrentSkill() {
+        return currentEND;
+    }
+
+    public void setCurrentSkill(int currentSkill) {
+        this.currentEND = currentSkill;
     }
     
 
