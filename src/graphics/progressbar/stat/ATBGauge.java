@@ -14,7 +14,7 @@ import graphics.progressbar.ProgressCircle;
 public class ATBGauge extends ProgressCircle {
     
     public ATBGauge() {
-        super(30, 0, 0, 500, new ColorRGBA(0, 0, 0, 0), ColorRGBA.Cyan);
+        super(40, 0, 0, 500, new ColorRGBA(0, 0, 0, 0), ColorRGBA.Cyan);
         createMesh();
     }
 }

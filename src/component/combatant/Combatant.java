@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package combatant.component;
+package component.combatant;
 
 /**
  *
@@ -10,6 +10,8 @@ package combatant.component;
  */
 public class Combatant {
     
+    public static enum CombatantType {Ally, Enemy, Neutral}
+
     private String name;
     private int maxHealth;
     private int currentHealth;
@@ -20,6 +22,7 @@ public class Combatant {
     private int SPD;
     private int ATK;
     private int DEF;
+    private CombatantType type = CombatantType.Ally;
     
     public Combatant(String name, int health, int speed, int attack, int defense) {
         this.name = name;
@@ -112,6 +115,30 @@ public class Combatant {
 
     public void setCurrentSkill(int currentSkill) {
         this.currentEND = currentSkill;
+    }
+
+    public int getEND() {
+        return END;
+    }
+
+    public void setEND(int END) {
+        this.END = END;
+    }
+
+    public int getCurrentEND() {
+        return currentEND;
+    }
+
+    public void setCurrentEND(int currentEND) {
+        this.currentEND = currentEND;
+    }
+
+    public CombatantType getType() {
+        return type;
+    }
+
+    public void setType(CombatantType type) {
+        this.type = type;
     }
     
 

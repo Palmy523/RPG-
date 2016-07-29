@@ -2,15 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package combatant.graphics;
+package graphics.combatant;
 
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
-import combatant.component.Combatant;
+import component.combatant.Combatant;
 import graphics.progressbar.stat.ATBGauge;
 import graphics.progressbar.stat.HealthBar;
 import graphics.progressbar.stat.ManaBar;
@@ -23,19 +22,25 @@ import mygame.Main;
  */
 public class CombatantNode extends Node {
 
+    
     private Combatant combatant;
     private EnduranceBar skillBar;
     private HealthBar healthBar;
     private ManaBar manaBar;
     private ATBGauge atbGauge;
+    private Geometry combatantGeom;
 
     public CombatantNode(Combatant combatant) {
         this.combatant = combatant;
-
+        
         Box box = new Box(0.5f, 0.75f, 0.5f);
         Geometry player = new Geometry("Combatant", box);
         Material mat = new Material(Main.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setColor("Color", ColorRGBA.Yellow);
+        switch(combatant.getType()) {
+            case Ally : mat.setColor("Color", ColorRGBA.Green.mult(0.75f)); break;
+            case Enemy : mat.setColor("Color", ColorRGBA.Red.mult(0.75f)); break;
+            case Neutral : mat.setColor("Color", ColorRGBA.Yellow); break;
+        }
         player.setMaterial(mat);
 
         healthBar = new HealthBar(combatant.getCurrentHealth(), combatant.getMaxHealth());

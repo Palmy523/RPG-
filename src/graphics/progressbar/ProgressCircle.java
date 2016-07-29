@@ -24,7 +24,7 @@ public class ProgressCircle extends Progress {
     }
     
     public ProgressCircle(int samples, int value, int min, int max, ColorRGBA color1, ColorRGBA color2) {
-        super(value, min, max, color1, color2, FillType.Vertical);
+        super(value, min, max, color1, color2, FillType.Horizontal);
         this.samples = samples;
     }
     
