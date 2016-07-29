@@ -14,6 +14,7 @@ import graphics.progressbar.ProgressBar;
 public class HealthBar extends ProgressBar{
     
     public HealthBar(int currentHealth, int maxHealth) {
-        super(currentHealth, 0, maxHealth, new ColorRGBA(102f / 255f, 51f / 255f, 153f / 255f, 1), ColorRGBA.Red, FillType.Horizontal);
+        super(currentHealth, 0, maxHealth, ColorRGBA.Blue, ColorRGBA.Red, FillType.Horizontal);
+        createMesh();
     }
 }

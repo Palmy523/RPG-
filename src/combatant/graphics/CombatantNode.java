@@ -6,10 +6,12 @@ package combatant.graphics;
 
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import combatant.component.Combatant;
+import graphics.progressbar.stat.ATBGauge;
 import graphics.progressbar.stat.HealthBar;
 import graphics.progressbar.stat.ManaBar;
 import graphics.progressbar.stat.EnduranceBar;
@@ -25,6 +27,7 @@ public class CombatantNode extends Node {
     private EnduranceBar skillBar;
     private HealthBar healthBar;
     private ManaBar manaBar;
+    private ATBGauge atbGauge;
 
     public CombatantNode(Combatant combatant) {
         this.combatant = combatant;
@@ -49,10 +52,14 @@ public class CombatantNode extends Node {
         //manaBar.update();
         //skillBar.update();
         
+        atbGauge = new ATBGauge();
+        atbGauge.setLocalTranslation(-1.5f, 1.5f, 0);
+        
         this.attachChild(player);
         this.attachChild(healthBar);
         this.attachChild(manaBar);
         this.attachChild(skillBar);
+        this.attachChild(atbGauge);
     }
 
     public Combatant getCombatant() {
@@ -85,6 +92,10 @@ public class CombatantNode extends Node {
 
     public void setManaBar(ManaBar manaBar) {
         this.manaBar = manaBar;
+    }
+    
+    public ATBGauge getATBGauge() {
+        return atbGauge;
     }
     
     

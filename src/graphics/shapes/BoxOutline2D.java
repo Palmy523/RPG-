@@ -16,7 +16,16 @@ import com.jme3.scene.shape.Line;
  */
 public class BoxOutline2D extends Node {
     
+    private float height;
+    private float width;
+    private float lineWidth;
+    
     public BoxOutline2D(float width, float height, float lineWidth, Material mat) {
+        
+        this.width = width;
+        this.height = height;
+        this.lineWidth = lineWidth;
+        
         Vector3f bottomLeft = new Vector3f(0, 0, 0);
         Vector3f topLeft = new Vector3f(0, height, 0);
         Vector3f topRight = new Vector3f(width, height, 0);
@@ -44,6 +53,9 @@ public class BoxOutline2D extends Node {
         this.attachChild(geom3);
         this.attachChild(geom4);
         
+    }
+    
+    public void updateWidth(int newWidth) {
     }
     
     

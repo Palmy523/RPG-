@@ -29,7 +29,7 @@ public abstract class Progress extends Node {
     private int incrementAmount = 1;
     private int decrementAmount = 1;
 
-    private boolean isTransitional = false;
+    private boolean isTransitional = true;
     private ColorRGBA transitionToColor = ColorRGBA.Red;
 
     public Progress(int value, int min, int max, ColorRGBA color1, ColorRGBA color2) {
@@ -46,13 +46,9 @@ public abstract class Progress extends Node {
         if (value < min) {
             this.value = min;
         }
-        System.out.println("value: " + this.value);
-        System.out.println("min: " + min);
-        System.out.println("max: " + max);
         this.filledColor = filledColor;
         this.unfilledColor = unfilledColor;
         this.fillType = type;
-        createMesh();
 
         switch (fillType) {
             case Horizontal:

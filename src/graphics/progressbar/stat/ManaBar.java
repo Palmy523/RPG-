@@ -14,6 +14,7 @@ import graphics.progressbar.ProgressBar;
 public class ManaBar extends ProgressBar {
 
     public ManaBar(int currentMana, int maxMana) {
-        super(currentMana, 0, maxMana, ColorRGBA.Blue, ColorRGBA.Red, FillType.Horizontal);
+        super(currentMana, 0, maxMana, new ColorRGBA(102f / 255f, 51f / 255f, 153f / 255f, 1), ColorRGBA.Red, FillType.Horizontal);
+        createMesh();
     }
 }
