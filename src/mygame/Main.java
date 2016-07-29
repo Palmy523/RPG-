@@ -13,12 +13,9 @@ import com.jme3.system.AppSettings;
 import combatant.component.Combatant;
 import combatant.graphics.CombatantNode;
 import graphics.progressbar.ProgressCircle;
-import graphics.progressbar.stat.ATBGauge;
 import graphics.progressbar.stat.EnduranceBar;
 import graphics.progressbar.stat.HealthBar;
 import graphics.progressbar.stat.ManaBar;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import static mygame.Main.app;
 
 /**
@@ -31,6 +28,12 @@ public class Main extends SimpleApplication {
     public static String unshadedMat = "Common/MatDefs/Misc/Unshaded.j3md";
     public CombatantNode combatant;
     public ProgressCircle atbGauge;
+    public Node node;
+    public Node menuNode;
+    public float xPos;
+    public static float menuFactor = 0.00049765625f;
+    public static int screenWidth = 1900;
+    public boolean turnTaken = false;
     
     public static void main(String[] args) {
         app = new Main();
@@ -38,7 +41,7 @@ public class Main extends SimpleApplication {
         app.setShowSettings(false);
         AppSettings settings = new AppSettings(true);
         app.setSettings(settings);
-        app.settings.setWidth(1280);
+        app.settings.setWidth(screenWidth);
         app.settings.setHeight(800);
         app.settings.setSamples(32);
         app.start();
@@ -75,6 +78,7 @@ public class Main extends SimpleApplication {
         combatant.getSkillBar().setValue(100);
         combatant.getSkillBar().update();
         combatant.setLocalTranslation(4, .75f, -2);
+        atbGauge = combatant.getATBGauge();
         battleground.attachChild(combatant);
         
         CombatantNode combatant2 = new CombatantNode(Combatant.createDefault("Dude Man"));
@@ -102,33 +106,58 @@ public class Main extends SimpleApplication {
         battleground.attachChild(battlegroundGeom);
         
         Material mat4 = this.getUnshadedMat();
-        mat4.setColor("Color", ColorRGBA.Red);
+        mat4.setColor("Color", ColorRGBA.DarkGray);
         
+        node = new Node();
+        Box menu = new Box(.1f, .4f, 0.0001f);
+        Geometry menuGeom = new Geometry("Menu", menu);
+        menuGeom.setMaterial(mat4);
+        menuGeom.setLocalTranslation(cam.getLocation());
+        menuGeom.move((float) screenWidth * menuFactor, 0, -8.89f);
+
+        
+        //CameraNode camNode = new CameraNode("Camera Node", cam);
+        //camNode.setControlDir(CameraControl.ControlDirection.CameraToSpatial);
+        
+        menuNode = new Node();
+        menuNode.attachChild(menuGeom);
         
         rootNode.attachChild(backdropGeom);
         rootNode.attachChild(battleground);
+        rootNode.attachChild(menuNode);
+        
+        xPos = 0;
         
     }
 
     @Override
     public void simpleUpdate(float tpf) {
-//        try {
-//            Thread.sleep(1000);
-//        } catch (InterruptedException ex) {
-//            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-        HealthBar bar = combatant.getHealthBar();
-        ManaBar manabar = combatant.getManaBar();
-        EnduranceBar skillBar = combatant.getSkillBar();
         atbGauge = combatant.getATBGauge();
-        bar.decrement();
-        manabar.decrement();
-        skillBar.decrement();
         atbGauge.increment();
         if (atbGauge.getValue() == atbGauge.getMax()) {
-            atbGauge.clearFill();
+            initiateTurn(combatant);
+            if (turnTaken) {
+                atbGauge.clearFill();
+            }
         }
+        //cam.setLocation(new Vector3f(xPos, 0, 5));
+        menuNode.setLocalRotation(cam.getRotation());
+        menuNode.setLocalTranslation(cam.getLocation());
+        //Vector3f location = menuNode.getLocalTranslation();
         
+        //menuNode.setLocalTranslation(cam.getLocation());
+        //menuNode.move(location);
+        
+        //xPos += .01f;
+        
+        
+
+        
+    }
+    
+    public void initiateTurn(CombatantNode combatant) {
+        Geometry geom = (Geometry) combatant.getChild("Combatant");
+        geom.getMaterial().setColor("Color", ColorRGBA.White);
     }
 
     @Override
