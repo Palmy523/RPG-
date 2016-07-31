@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package component.combatant;
+package component.battle.combatant;
 
 /**
  *
@@ -12,6 +12,13 @@ public class Combatant {
     
     public static enum CombatantType {Ally, Enemy, Neutral}
 
+    private static int ABSOLUTE_MAX_HEALTH = 99999;
+    private static int ABSOLUTE_MIN_HEALTH = 99999;
+    private static int ABSOLUTE_MAX_MANA = 99999;
+    private static int ABSOLUTE_MAX_ATK = 999;
+    private static int ABSOLUTE_MAX_DEF = 999;
+    private static int ABSOLUTE_MAX_SPD = 999;
+    
     private String name;
     private int maxHealth;
     private int currentHealth;
@@ -24,19 +31,10 @@ public class Combatant {
     private int DEF;
     private CombatantType type = CombatantType.Ally;
     
-    public Combatant(String name, int health, int speed, int attack, int defense) {
-        this.name = name;
-        this.maxHealth = health;
-        this.currentHealth = maxHealth;
-        this.SPD = speed;
-        this.ATK = attack;
-        this.DEF = defense;
+    public Combatant() {
+        
     }
     
-    public static Combatant createDefault(String name) {
-        return new Combatant(name, 100, 20, 10, 5);
-    }
-
     public String getName() {
         return name;
     }

@@ -7,7 +7,7 @@ package graphics.progressbar;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import graphics.shapes.FillCircle;
-import mygame.Main;
+import game.Main;
 
 /**
  *

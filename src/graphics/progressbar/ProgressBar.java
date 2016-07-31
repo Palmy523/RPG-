@@ -9,7 +9,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Quad;
 import graphics.shapes.BoxOutline2D;
-import mygame.Main;
+import game.Main;
 
 /**
  *

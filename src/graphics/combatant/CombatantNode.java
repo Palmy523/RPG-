@@ -9,12 +9,12 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
-import component.combatant.Combatant;
+import component.battle.combatant.Combatant;
 import graphics.progressbar.stat.ATBGauge;
 import graphics.progressbar.stat.HealthBar;
 import graphics.progressbar.stat.ManaBar;
 import graphics.progressbar.stat.EnduranceBar;
-import mygame.Main;
+import game.Main;
 
 /**
  *
@@ -51,11 +51,6 @@ public class CombatantNode extends Node {
         
         skillBar = new EnduranceBar(combatant.getCurrentSkill(), combatant.getMaxSkill());
         skillBar.setLocalTranslation(-(skillBar.getWidth() / 2), 1.20f, 0);
-        skillBar.setValue(25);
-        skillBar.update();
-        //bar.update();
-        //manaBar.update();
-        //skillBar.update();
         
         atbGauge = new ATBGauge();
         atbGauge.setLocalTranslation(-1.5f, 1.5f, 0);

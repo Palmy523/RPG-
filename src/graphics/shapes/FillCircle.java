@@ -26,6 +26,7 @@ public class FillCircle extends Node {
     private float angle;
     
     public FillCircle(float radius, int samples, Material mat, float fill) {
+        
         this.fill = fill;
         this.samples = samples;
         triangles = new ArrayList<>();
@@ -33,8 +34,8 @@ public class FillCircle extends Node {
         angle = (float) 360/samples;
         float angleB = (180 - angle) / 2;
         float rSq = (float) Math.pow(radius, 2);
-        float edgeWidth = (float) (radius * Math.sin(FastMath.DEG_TO_RAD * angle) / Math.sin(FastMath.DEG_TO_RAD * angleB));
-        edgeWidth = edgeWidth / 2;
+        float edgeWidth = (float) (radius * Math.sin(FastMath.DEG_TO_RAD * angle) 
+                / Math.sin(FastMath.DEG_TO_RAD * angleB)) / 2;
         float segmentHeight = (float) Math.sqrt(rSq - Math.pow(edgeWidth, 2));
         Vector3f center = new Vector3f(0, 0, 0);
         Vector3f right = new Vector3f((float)edgeWidth, segmentHeight, 0);
@@ -42,6 +43,7 @@ public class FillCircle extends Node {
         Triangle triangle = new Triangle(right, left, center);
         triangleGeom = new Geometry("Triangle", triangle);
         triangleGeom.setMaterial(mat);
+        
         int numFills = (int) (samples * fill);
         for (int i = 0; i < numFills; i++) {
             addTriangle();
