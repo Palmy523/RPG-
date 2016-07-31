@@ -9,30 +9,107 @@ package component.battle.combatant;
  * @author Dave
  */
 public class Combatant {
-    
+
+    /**
+     * Enumerator to distinguish between enemy types.
+     */
     public static enum CombatantType {Ally, Enemy, Neutral}
 
+    /**
+     * Max health setting.
+     */
     private static int ABSOLUTE_MAX_HEALTH = 99999;
-    private static int ABSOLUTE_MIN_HEALTH = 99999;
+    
+    /**
+     * Max Mana setting.
+     */
     private static int ABSOLUTE_MAX_MANA = 99999;
+    
+    /**
+     * Max Endurance setting.
+     */
+    private static int ABSOLUTE_MAX_END = 99999;
+    
+    /**
+     * Max Attack setting.
+     */
     private static int ABSOLUTE_MAX_ATK = 999;
+    
+    /**
+     * Max Defense setting.
+     */
     private static int ABSOLUTE_MAX_DEF = 999;
+    
+    /**
+     * Max Speed setting.
+     */
     private static int ABSOLUTE_MAX_SPD = 999;
     
+    /**
+     * The Players unique ID.
+     */
+    private String id;
+    
+    /**
+     * The name of the character.
+     */
     private String name;
+    
+    /**
+     * The characters maxHealth.
+     */
     private int maxHealth;
+    
+    /**
+     * The characters current health.
+     */
     private int currentHealth;
+    
+    /**
+     * The players maxMana.
+     */
     private int maxMana = 100;
+    
+    /**
+     * The players currentMana.
+     */
     private int currentMana = 50;
-    private int END = 100;
+    
+    /**
+     * The players max Endurance.
+     */
+    private int maxEND = 100;
+    
+    /**
+     * The players current Endurance.
+     */
     private int currentEND = 50;
+    
+    /**
+     * The players Speed setting.
+     */
     private int SPD;
+    
+    /**
+     * The players Attack setting.
+     */
     private int ATK;
+    
+    /**
+     * The players Defense setting.
+     */
     private int DEF;
+    
+    /**
+     * The players CombatantType.
+     */
     private CombatantType type = CombatantType.Ally;
     
+    /**
+     * Default Constructor, too many arguments to make a constructor. Create and 
+     * set values using setters.
+     */
     public Combatant() {
-        
     }
     
     public String getName() {
@@ -48,7 +125,11 @@ public class Combatant {
     }
 
     public void setSPD(int SPD) {
-        this.SPD = SPD;
+        if (SPD < 0) {
+            SPD = 0;
+        }
+        this.SPD = (SPD > Combatant.ABSOLUTE_MAX_SPD) 
+                ? Combatant.ABSOLUTE_MAX_SPD : SPD;
     }
 
     public int getATK() {
@@ -56,7 +137,11 @@ public class Combatant {
     }
 
     public void setATK(int ATK) {
-        this.ATK = ATK;
+        if (ATK < 0) {
+            ATK = 0;
+        }
+        this.ATK = (SPD > Combatant.ABSOLUTE_MAX_ATK) 
+                ? Combatant.ABSOLUTE_MAX_ATK : ATK;
     }
 
     public int getDEF() {
@@ -64,7 +149,11 @@ public class Combatant {
     }
 
     public void setDEF(int DEF) {
-        this.DEF = DEF;
+        if (DEF < 0) {
+            DEF = 0;
+        }
+        this.DEF = (DEF > Combatant.ABSOLUTE_MAX_DEF) 
+                ? Combatant.ABSOLUTE_MAX_DEF : DEF;
     }
 
     public int getMaxHealth() {
@@ -72,7 +161,9 @@ public class Combatant {
     }
 
     public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
+        maxHealth = (maxHealth < 0) ? 0 : maxHealth;
+        this.maxHealth = (maxHealth > Combatant.ABSOLUTE_MAX_HEALTH) 
+                ? Combatant.ABSOLUTE_MAX_HEALTH : maxHealth;
     }
 
     public int getCurrentHealth() {
@@ -80,7 +171,9 @@ public class Combatant {
     }
 
     public void setCurrentHealth(int currentHealth) {
-        this.currentHealth = currentHealth;
+        currentHealth = (currentHealth < 0) ? 0 : currentHealth;
+        this.currentHealth = (currentHealth > maxHealth) 
+                ? maxHealth : currentHealth;
     }
 
     public int getMaxMana() {
@@ -88,7 +181,11 @@ public class Combatant {
     }
 
     public void setMaxMana(int maxMana) {
-        this.maxMana = maxMana;
+        if (maxMana < 0) {
+            maxMana = 0;
+        }
+        this.maxMana = (maxMana > Combatant.ABSOLUTE_MAX_MANA)
+                ? Combatant.ABSOLUTE_MAX_MANA : maxMana;
     }
 
     public int getCurrentMana() {
@@ -96,31 +193,23 @@ public class Combatant {
     }
 
     public void setCurrentMana(int currentMana) {
-        this.currentMana = currentMana;
+        if (currentMana < 0) {
+            currentMana = 0;
+        }
+        this.currentMana = (currentMana > maxMana)
+                ? maxMana : currentMana;
     }
 
-    public int getMaxSkill() {
-        return END;
+    public int getMaxEND() {
+        return maxEND;
     }
 
-    public void setMaxSkill(int maxSkill) {
-        this.END = maxSkill;
-    }
-
-    public int getCurrentSkill() {
-        return currentEND;
-    }
-
-    public void setCurrentSkill(int currentSkill) {
-        this.currentEND = currentSkill;
-    }
-
-    public int getEND() {
-        return END;
-    }
-
-    public void setEND(int END) {
-        this.END = END;
+    public void setMaxEND(int maxEND) {
+        if (maxEND < 0) {
+            maxEND = 0;
+        }
+        this.maxEND = (maxEND > Combatant.ABSOLUTE_MAX_END) 
+                ? Combatant.ABSOLUTE_MAX_END : maxEND;
     }
 
     public int getCurrentEND() {
@@ -128,7 +217,8 @@ public class Combatant {
     }
 
     public void setCurrentEND(int currentEND) {
-        this.currentEND = currentEND;
+        currentEND = (currentEND < 0) ? 0 : currentEND;
+        this.currentEND = (currentEND > maxEND) ? maxEND : currentEND ;
     }
 
     public CombatantType getType() {
@@ -138,6 +228,16 @@ public class Combatant {
     public void setType(CombatantType type) {
         this.type = type;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+    
+    
     
 
 }

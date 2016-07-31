@@ -17,4 +17,8 @@ public class ATBGauge extends ProgressCircle {
         super(40, 0, 0, 500, new ColorRGBA(0, 0, 0, 0), ColorRGBA.Cyan);
         createMesh();
     }
+    
+    public boolean isFull() {
+        return this.getValue() == this.getMax();
+    }
 }

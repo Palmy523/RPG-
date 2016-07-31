@@ -34,14 +34,14 @@ public class CombatantNode extends Node {
         this.combatant = combatant;
         
         Box box = new Box(0.5f, 0.75f, 0.5f);
-        Geometry player = new Geometry("Combatant", box);
+        combatantGeom = new Geometry("Combatant", box);
         Material mat = new Material(Main.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
         switch(combatant.getType()) {
             case Ally : mat.setColor("Color", ColorRGBA.Green.mult(0.75f)); break;
             case Enemy : mat.setColor("Color", ColorRGBA.Red.mult(0.75f)); break;
             case Neutral : mat.setColor("Color", ColorRGBA.Yellow); break;
         }
-        player.setMaterial(mat);
+        combatantGeom.setMaterial(mat);
 
         healthBar = new HealthBar(combatant.getCurrentHealth(), combatant.getMaxHealth());
         healthBar.setLocalTranslation(-(healthBar.getWidth() / 2), 1.8f, 0);
@@ -49,19 +49,43 @@ public class CombatantNode extends Node {
         manaBar = new ManaBar(combatant.getCurrentMana(), combatant.getMaxMana());
         manaBar.setLocalTranslation(-(manaBar.getWidth() / 2), 1.5f, 0);
         
-        skillBar = new EnduranceBar(combatant.getCurrentSkill(), combatant.getMaxSkill());
+        skillBar = new EnduranceBar(combatant.getCurrentEND(), combatant.getMaxEND());
         skillBar.setLocalTranslation(-(skillBar.getWidth() / 2), 1.20f, 0);
         
         atbGauge = new ATBGauge();
         atbGauge.setLocalTranslation(-1.5f, 1.5f, 0);
         
-        this.attachChild(player);
+        this.attachChild(combatantGeom);
         this.attachChild(healthBar);
         this.attachChild(manaBar);
         this.attachChild(skillBar);
         this.attachChild(atbGauge);
     }
+    
+    public void incrementATBGauge() {
+        incrementATBGauge(1);
+    }
+    
+    public void incrementATBGauge(int value) {
+        this.atbGauge.increment(value);
+    }
 
+    public ATBGauge getAtbGauge() {
+        return atbGauge;
+    }
+
+    public void setAtbGauge(ATBGauge atbGauge) {
+        this.atbGauge = atbGauge;
+    }
+
+    public Geometry getCombatantGeom() {
+        return combatantGeom;
+    }
+
+    public void setCombatantGeom(Geometry combatantGeom) {
+        this.combatantGeom = combatantGeom;
+    }
+    
     public Combatant getCombatant() {
         return combatant;
     }
@@ -93,10 +117,4 @@ public class CombatantNode extends Node {
     public void setManaBar(ManaBar manaBar) {
         this.manaBar = manaBar;
     }
-    
-    public ATBGauge getATBGauge() {
-        return atbGauge;
-    }
-    
-    
 }

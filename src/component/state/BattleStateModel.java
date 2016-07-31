@@ -5,7 +5,7 @@
 package component.state;
 
 import component.battle.combatant.Combatant;
-import graphics.Scene.SceneType;
+import graphics.scene.Scene.SceneType;
 import java.util.ArrayList;
 import java.util.List;
 

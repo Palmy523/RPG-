@@ -28,14 +28,11 @@ public class StateManager {
     public void loadStartMenu() {
         MainMenuState mainMenuState = new MainMenuState();
         GameState.getInstance().setCurrentState(mainMenuState);
-        //mainMenuState.setEnabled(true);
         app.getStateManager().attach(mainMenuState);
     }
 
     public void loadBattle(BattleStateModel battleModel) {
-        AppState currentState = GameState.getInstance().getCurrentState();
         AppStateManager manager = app.getStateManager();
-        manager.detach(manager.getState(MainMenuState.class));
         BattleState state = new BattleState(battleModel);
         manager.attach(state);
         GameState.getInstance().setCurrentState(state);

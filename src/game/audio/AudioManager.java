@@ -21,6 +21,7 @@ public class AudioManager {
         }
         this.backgroundMusic = node;
         node.play();
+        node.setLooping(true);
     }
 
     public void setBackgroundMusic(AudioNode backgroundMusic) {

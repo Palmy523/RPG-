@@ -18,9 +18,9 @@ import game.state.GameState;
 import game.state.StateManager;
 
 /**
- * test
+ * Main app entry point.
  *
- * @author normenhansen
+ * @author dpalmiter
  */
 public class Main extends SimpleApplication {
 
@@ -29,31 +29,25 @@ public class Main extends SimpleApplication {
     public GameState state;
     public StateManager manager;
     public static String unshadedMat = "Common/MatDefs/Misc/Unshaded.j3md";
-    public static int screenWidth = 1280;
-    public static int screenHeight = 800;
-//    public ProgressCircle atbGauge;
-//    public Node node;
-//    public Node menuNode;
-//    public float xPos;
-//    public static float menuFactor = 0.00049765625f;
-//    public boolean turnTaken = false;
-//    public Geometry highlightTurnGeom;
-//    public CombatantNode combatant;
+    public static int screenWidth = 1900;
+    public static int screenHeight = 900;
+    private static boolean displayStats = false;
+    private static boolean displayFps = false;
 
+    /**
+     * If I need to explain this, you are already lost.
+     */
     public static void main(String[] args) {
         app = new Main();
-
         //app.showStartupMenu();
         app.setShowSettings(false);
         AppSettings settings = new AppSettings(true);
         app.setSettings(settings);
         app.settings.setWidth(screenWidth);
         app.settings.setHeight(screenHeight);
-        app.settings.setSamples(0);
+        app.settings.setSamples(32);
         app.start();
         System.out.println((int) 5.75);
-
-
     }
 
     /**
@@ -61,118 +55,25 @@ public class Main extends SimpleApplication {
      */
     @Override
     public void simpleInitApp() {
+        //Get the data for the user and populate the game state.
         initUserState("0");
+
+        //Init the Nifty class for menu creation.
         initNifty();
+
+        //Initialize the StateManager and load the start menu.
         manager = new StateManager(this);
         manager.loadStartMenu();
 
-
-
-
-//        AudioNode backgroundMusic = new AudioNode(assetManager, "Sounds/Battle.ogg", true);
-//        backgroundMusic.setPositional(false);
-//        backgroundMusic.play();
-//        Box backdropMesh = new Box(30, 30, .01f);
-//        Box battlegroundMesh = new Box(20, .01f, 20);
-//
-//        Geometry backdropGeom = new Geometry("Background", backdropMesh);
-//        Geometry battlegroundGeom = new Geometry("Floor", battlegroundMesh);
-//
-//        backdropGeom.setLocalTranslation(0, 0, -30);
-//        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-//        mat.setColor("Color", new ColorRGBA(0, 0, 255, .5f));
-//        backdropGeom.setMaterial(mat);
-//
-//        Material mat3 = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-//        mat3.setColor("Color", ColorRGBA.Brown);
-//        battlegroundGeom.setMaterial(mat3);
-//
-//        Node battleground = new Node("BattleGround");
-//
-//        combatant = new CombatantNode(Combatant.createDefault("Dude Man"));
-//        combatant.getHealthBar().setValue(100);
-//        combatant.getHealthBar().update();
-//        combatant.getManaBar().setValue(100);
-//        combatant.getManaBar().update();
-//        combatant.getSkillBar().setValue(100);
-//        combatant.getSkillBar().update();
-//        combatant.setLocalTranslation(4, .75f, -2);
-//        atbGauge = combatant.getATBGauge();
-//        battleground.attachChild(combatant);
-//
-//        CombatantNode combatant2 = new CombatantNode(Combatant.createDefault("Dude Man"));
-//        combatant2.getHealthBar().setValue(40);
-//        combatant2.getHealthBar().update();
-//        combatant2.setLocalTranslation(4, .75f, 2);
-//        battleground.attachChild(combatant2);
-//
-//
-//        Combatant combatant = Combatant.createDefault("Whatever Man");
-//        combatant.setType(Combatant.CombatantType.Enemy);
-//        CombatantNode combatant3 = new CombatantNode(combatant);
-//        combatant3.getSkillBar().setValue(100);
-//        combatant3.getSkillBar().update();
-//        combatant3.setLocalTranslation(-4, .75f, -2);
-//        battleground.attachChild(combatant3);
-//
-//        combatant = Combatant.createDefault("Bling");
-//        combatant.setType(Combatant.CombatantType.Enemy);
-//        CombatantNode combatant4 = new CombatantNode(combatant);
-//        combatant4.getManaBar().setValue(100);
-//        combatant4.getManaBar().update();
-//        combatant4.getHealthBar().setValue(50);
-//        combatant4.getHealthBar().update();
-//        combatant4.setLocalTranslation(-4, .75f, 2);
-//        battleground.attachChild(combatant4);
-//
-//        battleground.setLocalTranslation(0, -3, -5);
-//        battleground.rotate(FastMath.DEG_TO_RAD * 10, 0, 0);
-//        battleground.attachChild(battlegroundGeom);
-//
-//        Material mat4 = this.getUnshadedMat();
-//        mat4.setColor("Color", ColorRGBA.DarkGray);
-//
-//        node = new Node();
-//        Box menu = new Box(.1f, .4f, 0.0001f);
-//        Geometry menuGeom = new Geometry("Menu", menu);
-//        menuGeom.setMaterial(mat4);
-//        menuGeom.setLocalTranslation(cam.getLocation());
-//        menuGeom.move((float) screenWidth * menuFactor, 0, -8.89f);
-//
-//        Box highlightBox = new Box(1.5f, .01f, 0);
-//        highlightTurnGeom = new Geometry("highlightBox", highlightBox);
-//        Material highlightMat = getUnshadedMat();
-//        highlightMat.setColor("Color", ColorRGBA.White);
-//
-//        //CameraNode camNode = new CameraNode("Camera Node", cam);
-//        //camNode.setControlDir(CameraControl.ControlDirection.CameraToSpatial);
-//
-//        menuNode = new Node();
-//        menuNode.attachChild(menuGeom);
-//
-//        rootNode.attachChild(backdropGeom);
-//        rootNode.attachChild(battleground);
-//        //rootNode.attachChild(menuNode);
-//
-//        xPos = 0;
+        //disable the fly cam
+        app.flyCam.setEnabled(false);
 
     }
 
     @Override
     public void simpleUpdate(float tpf) {
-    }
-
-    public void initiateTurn(CombatantNode combatant) {
-//        Geometry geom = (Geometry) combatant.getChild("Combatant");
-        //geom.getMaterial().setColor("Color", ColorRGBA.White);
-//        turnTaken = true;
-//        combatant.getHealthBar().decrement(20);
-//        turnTaken = true;
-    }
-
-    public void endTurn(CombatantNode combatant) {
-//        Geometry geom = (Geometry) combatant.getChild("Combatant");
-//        geom.getMaterial().setColor("Color", ColorRGBA.Yellow);
+        setDisplayStatView(displayStats);
+        this.setDisplayFps(displayFps);
     }
 
     @Override
@@ -193,7 +94,9 @@ public class Main extends SimpleApplication {
     }
 
     /**
-     * Initializes the GameState based on a userId.
+     * Initializes the GameState based on a userId. At some point this will
+     * contain a manager that will load a users data either from local save
+     * files or network communication to remote database.
      *
      * @param userId the userId of the person to initialize the GameState for.
      */
@@ -205,48 +108,97 @@ public class Main extends SimpleApplication {
         User user = new User();
         gameStateModel.setUser(user);
 
-        Combatant combatant = new Combatant();
-        combatant.setCurrentHealth(100);
-        combatant.setMaxHealth(100);
-        combatant.setName("Dudeman");
-        combatant.setMaxMana(25);
-        combatant.setCurrentMana(25);
-        combatant.setEND(100);
-        combatant.setCurrentEND(100);
-        battleStateModel.getAllys().add(combatant);
+        Combatant ally1 = new Combatant();
+        ally1.setId("0");
+        ally1.setMaxHealth(100);
+        ally1.setCurrentHealth(100);
+        ally1.setName("Dudeman");
+        ally1.setMaxMana(25);
+        ally1.setCurrentMana(25);
+        ally1.setMaxEND(100);
+        ally1.setCurrentEND(100);
+        battleStateModel.getAllys().add(ally1);
 
-        Combatant combatant2 = new Combatant();
-        combatant2.setCurrentHealth(100);
-        combatant2.setMaxHealth(100);
-        combatant2.setName("Slappy");
-        combatant2.setMaxMana(25);
-        combatant2.setCurrentMana(25);
-        combatant2.setEND(100);
-        combatant2.setCurrentEND(100);
-        battleStateModel.getAllys().add(combatant2);
+        Combatant ally2 = new Combatant();
+        ally2.setId("1");
+        ally2.setMaxHealth(100);
+        ally2.setCurrentHealth(100);
+        ally2.setName("Slappy");
+        ally2.setMaxMana(25);
+        ally2.setCurrentMana(25);
+        ally2.setMaxEND(100);
+        ally2.setCurrentEND(100);
+        battleStateModel.getAllys().add(ally2);
 
-        Combatant combatant3 = new Combatant();
-        combatant3.setCurrentHealth(100);
-        combatant3.setMaxHealth(100);
-        combatant3.setName("Banana Lover");
-        combatant3.setMaxMana(25);
-        combatant3.setCurrentMana(25);
-        combatant3.setEND(100);
-        combatant3.setCurrentEND(100);
-        combatant3.setType(CombatantType.Enemy);
-        battleStateModel.getEnemies().add(combatant3);
+        Combatant ally3 = new Combatant();
+                ally3.setId("2");
+        ally3.setMaxHealth(100);
+        ally3.setCurrentHealth(100);
+        ally3.setName("Slappy");
+        ally3.setMaxMana(25);
+        ally3.setCurrentMana(25);
+        ally3.setMaxEND(100);
+        ally3.setCurrentEND(100);
+        battleStateModel.getAllys().add(ally3);
 
+        Combatant ally4 = new Combatant();
+        ally4.setId("3");
+        ally4.setMaxHealth(100);
+        ally4.setCurrentHealth(100);
+        ally4.setName("Slappy");
+        ally4.setMaxMana(25);
+        ally4.setCurrentMana(25);
+        ally4.setMaxEND(100);
+        ally4.setCurrentEND(100);
+        battleStateModel.getAllys().add(ally4);
 
-        Combatant combatant4 = new Combatant();
-        combatant4.setCurrentHealth(100);
-        combatant4.setMaxHealth(100);
-        combatant4.setName("Dudeman");
-        combatant4.setMaxMana(25);
-        combatant4.setCurrentMana(25);
-        combatant4.setEND(100);
-        combatant4.setCurrentEND(100);
-        combatant4.setType(CombatantType.Enemy);
-        battleStateModel.getEnemies().add(combatant4);
+        Combatant enemy1 = new Combatant();
+        enemy1.setId("4");
+        enemy1.setMaxHealth(100);
+        enemy1.setCurrentHealth(100);
+        enemy1.setName("Banana Lover");
+        enemy1.setMaxMana(25);
+        enemy1.setCurrentMana(25);
+        enemy1.setMaxEND(100);
+        enemy1.setCurrentEND(100);
+        enemy1.setType(CombatantType.Enemy);
+        battleStateModel.getEnemies().add(enemy1);
+
+        Combatant enemy2 = new Combatant();
+        enemy2.setId("5");
+        enemy2.setMaxHealth(100);
+        enemy2.setCurrentHealth(100);
+        enemy2.setName("Polyman");
+        enemy2.setMaxMana(25);
+        enemy2.setCurrentMana(25);
+        enemy2.setMaxEND(100);
+        enemy2.setCurrentEND(100);
+        enemy2.setType(CombatantType.Enemy);
+        battleStateModel.getEnemies().add(enemy2);
+
+        Combatant enemy3 = new Combatant();
+        enemy3.setId("6");
+        enemy3.setMaxHealth(100);
+        enemy3.setCurrentHealth(100);
+        enemy3.setName("Polyman");
+        enemy3.setMaxMana(25);
+        enemy3.setCurrentMana(25);
+        enemy3.setMaxEND(100);
+        enemy3.setCurrentEND(100);
+        enemy3.setType(CombatantType.Enemy);
+        battleStateModel.getEnemies().add(enemy3);
+
+        Combatant enemy4 = new Combatant();
+        enemy4.setId("7");
+        enemy4.setMaxHealth(100);
+        enemy4.setCurrentHealth(100);
+        enemy4.setName("Polyman");
+        enemy4.setMaxMana(25);
+        enemy4.setCurrentMana(25);
+        enemy4.setMaxEND(100);
+        enemy4.setCurrentEND(100);
+        enemy4.setType(CombatantType.Enemy);
+        battleStateModel.getEnemies().add(enemy4);
 
         state.setBattleStateModel(battleStateModel);
         state.setModel(gameStateModel);
