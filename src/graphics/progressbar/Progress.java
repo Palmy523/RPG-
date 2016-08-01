@@ -86,12 +86,10 @@ public abstract class Progress extends Node {
     }
 
     public void decrement(int amount) {
-        if (value - amount > min) {
-            value -= amount;
-        } else {
+        value -= amount;
+        if (value < min) {
             value = min;
         }
-
         update();
     }
 
@@ -174,8 +172,6 @@ public abstract class Progress extends Node {
             } else {
                 newBlue = blue + (newBlue * getUnfilledValue());
             }
-
-
             return new ColorRGBA(newRed, newGreen, newBlue, 1);
         }
         return filledColor;

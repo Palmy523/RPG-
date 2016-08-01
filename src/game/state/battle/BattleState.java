@@ -61,17 +61,17 @@ public class BattleState extends AbstractAppState {
         atbUpdateStat += currentTime - startTime;
         startTime = currentTime;
         updateATBGauge();
-        //processPlayerTurn();
-        //processEnemyTurn();
-        //eventBus.processAllEvents();
+        processPlayerTurn();
+        processEnemyTurn();
+        eventBus.processAllEvents();
         atbUpdateStat = 0;
     }
 
     private void updateATBGauge() {
         for (CombatantNode node : scene.getCombatantMap().values()) {
             if (node.getAtbGauge().isFull()) {
-                node.getAtbGauge().clearFill();
-                //queueTurn(node);
+                //node.getAtbGauge().clearFill();
+                queueTurn(node);
             } else {
                 node.incrementATBGauge((int) atbUpdateStat);
             }
@@ -105,7 +105,9 @@ public class BattleState extends AbstractAppState {
         if (currentTurnEvent != null && !currentTurnEvent.isProcessing()) {
             if (!currentTurnEvent.isAwaitingUserInput()) {
                 if (!currentTurnEvent.isEventFired()) {
-                    eventBus.registerEvent(currentTurnEvent);
+                    //eventBus.registerEvent(currentTurnEvent);
+                    currentTurnEvent.fireEvent();
+                    currentTurnEvent.isAwaitingUserInput();
                 }
             }
         }
@@ -113,15 +115,28 @@ public class BattleState extends AbstractAppState {
 
     private void processEnemyTurn() {
         if (enemyTurnEvent == null) {
-            enemyTurnEvent = turnQueue.pop();
+            enemyTurnEvent = enemyTurnQueue.pop();
         }
 
         if (enemyTurnEvent != null && !enemyTurnEvent.isProcessing()) {
             if (!enemyTurnEvent.isAwaitingUserInput()) {
                 if (!enemyTurnEvent.isEventFired()) {
-                    eventBus.registerEvent(enemyTurnEvent);
+                    enemyTurnEvent.fireEvent();
+                    enemyTurnEvent = null;
                 }
             }
         }
     }
+
+    public BattleScene getScene() {
+        return scene;
+    }
+
+    public void setScene(BattleScene scene) {
+        this.scene = scene;
+    }
+    
+    
+    
+    
 }

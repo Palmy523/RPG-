@@ -135,8 +135,8 @@ public class Main extends SimpleApplication {
         Combatant ally3 = new Combatant();
                 ally3.setId("2");
         ally3.setMaxHealth(100);
-        ally3.setCurrentHealth(100);
-        ally3.setName("Slappy");
+        ally3.setCurrentHealth(20);
+        ally3.setName("Crappy");
         ally3.setMaxMana(25);
         ally3.setCurrentMana(25);
         ally3.setMaxEND(100);
@@ -148,7 +148,7 @@ public class Main extends SimpleApplication {
         ally4.setId("3");
         ally4.setMaxHealth(100);
         ally4.setCurrentHealth(100);
-        ally4.setName("Slappy");
+        ally4.setName("Happy");
         ally4.setMaxMana(25);
         ally4.setCurrentMana(25);
         ally4.setMaxEND(100);
@@ -166,6 +166,7 @@ public class Main extends SimpleApplication {
         enemy1.setMaxEND(100);
         enemy1.setCurrentEND(100);
         enemy1.setSPD(40);
+        enemy1.setATK(2);
         enemy1.setType(CombatantType.Enemy);
         battleStateModel.getEnemies().add(enemy1);
 
@@ -173,12 +174,13 @@ public class Main extends SimpleApplication {
         enemy2.setId("5");
         enemy2.setMaxHealth(100);
         enemy2.setCurrentHealth(100);
-        enemy2.setName("Polyman");
+        enemy2.setName("Pookachoo");
         enemy2.setMaxMana(25);
         enemy2.setCurrentMana(25);
         enemy2.setMaxEND(100);
         enemy2.setCurrentEND(100);
         enemy2.setSPD(80);
+        enemy2.setATK(30);
         enemy2.setType(CombatantType.Enemy);
         battleStateModel.getEnemies().add(enemy2);
 
@@ -186,25 +188,27 @@ public class Main extends SimpleApplication {
         enemy3.setId("6");
         enemy3.setMaxHealth(100);
         enemy3.setCurrentHealth(100);
-        enemy3.setName("Polyman");
+        enemy3.setName("BlipBob");
         enemy3.setMaxMana(25);
         enemy3.setCurrentMana(25);
         enemy3.setMaxEND(100);
         enemy3.setCurrentEND(100);
         enemy3.setSPD(160);
+        enemy3.setATK(10);
         enemy3.setType(CombatantType.Enemy);
         battleStateModel.getEnemies().add(enemy3);
 
         Combatant enemy4 = new Combatant();
         enemy4.setId("7");
         enemy4.setMaxHealth(100);
-        enemy4.setCurrentHealth(100);
+        enemy4.setCurrentHealth(80);
         enemy4.setName("Polyman");
         enemy4.setMaxMana(25);
         enemy4.setCurrentMana(25);
         enemy4.setMaxEND(100);
         enemy4.setCurrentEND(100);
-        enemy4.setSPD(320);
+        enemy4.setSPD(999);
+        enemy4.setATK(1);
         enemy4.setType(CombatantType.Enemy);
         battleStateModel.getEnemies().add(enemy4);
 

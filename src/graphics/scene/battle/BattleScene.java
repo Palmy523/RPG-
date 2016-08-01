@@ -17,7 +17,9 @@ import component.state.BattleStateModel;
 import game.Main;
 import graphics.scene.Scene.SceneType;
 import graphics.combatant.CombatantNode;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -27,8 +29,13 @@ public class BattleScene extends Node {
     
     private AudioNode backgroundMusic;
     private HashMap<String, CombatantNode> combatantMap;
+    private List<CombatantNode> allys;
+    private List<CombatantNode> enemies;
+    private Node battleground;
 
     public BattleScene(BattleStateModel model, SceneType type) {
+        allys = new ArrayList<>();
+        enemies = new ArrayList<>();
         combatantMap = new HashMap<>();
         AssetManager assetManager = Main.app.getAssetManager();
         Box backdropMesh = new Box(30, 30, .01f);
@@ -52,7 +59,7 @@ public class BattleScene extends Node {
                 break;
         }
         
-        Node battleground = new Node("BattleGround");
+        battleground = new Node("BattleGround");
 
         float allyStartX = 5.5f;
         float allyStartY = .75f;
@@ -63,6 +70,7 @@ public class BattleScene extends Node {
             combatantNode.setLocalTranslation(allyStartX, allyStartY, allyStartZ);
             battleground.attachChild(combatantNode);
             allyStartZ -= 3.5f;
+            allys.add(combatantNode);
             combatantMap.put(combatant.getId(), combatantNode);
         }
         
@@ -72,6 +80,7 @@ public class BattleScene extends Node {
             combatantNode.setLocalTranslation(-allyStartX, allyStartY, allyStartZ);
             battleground.attachChild(combatantNode);
             allyStartZ -= 3.5f;
+            enemies.add(combatantNode);
             combatantMap.put(combatant.getId(), combatantNode);
         }
 
@@ -81,6 +90,12 @@ public class BattleScene extends Node {
 
         this.attachChild(backdropGeom);
         this.attachChild(battleground);
+    }
+    
+    public void detachCombatant(CombatantNode combatantNode) {
+        battleground.detachChild(combatantNode);
+        this.allys.remove(combatantNode);
+        this.combatantMap.remove(combatantNode.getCombatant().getId());
     }
 
     public HashMap<String, CombatantNode> getCombatantMap() {
@@ -94,4 +109,22 @@ public class BattleScene extends Node {
     public AudioNode getBackgroundMusic() {
         return backgroundMusic;
     }
+
+    public List<CombatantNode> getAllys() {
+        return allys;
+    }
+
+    public void setAllys(List<CombatantNode> allys) {
+        this.allys = allys;
+    }
+
+    public List<CombatantNode> getEnemies() {
+        return enemies;
+    }
+
+    public void setEnemies(List<CombatantNode> enemies) {
+        this.enemies = enemies;
+    }
+    
+    
 }

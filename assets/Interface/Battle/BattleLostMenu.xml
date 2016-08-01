@@ -6,10 +6,10 @@
     <useStyles filename="nifty-default-styles.xml" />
     <useControls filename="nifty-default-controls.xml" />
     
-    <screen id="battle_actionbar" controller="game.state.menu.battle.BattleActionBar">
+    <screen id="battle_lost" controller="game.state.menu.battle.BattleLostMenu">
         <layer id="foreground" childLayout="center">
-            <panel id="panel_background" backgroundColor="#000000ff" valign="bottom" width= "600" height="50" childLayout="Horizontal">
-                <control name="label" color="#ffffffff" text="A: Attack"></control>
+            <panel id="panel_background" backgroundColor="#000000ff" width= "100%" height="100%" childLayout="center">
+                <control name="label" color="#ffffffff" align="center" valign="center" text="Wow.... you got your ass handed to you..."></control>
             </panel>
         </layer>
     </screen>

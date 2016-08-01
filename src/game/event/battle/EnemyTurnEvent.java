@@ -4,6 +4,7 @@
  */
 package game.event.battle;
 
+import game.state.battle.BattleManager;
 import game.state.battle.BattleState;
 import graphics.combatant.CombatantNode;
 
@@ -23,7 +24,8 @@ public class EnemyTurnEvent extends TurnEvent {
     
     @Override
     public void fireEvent() {
-        this.combatantNode.getAtbGauge().reset();
+        this.combatantNode.getAtbGauge().clearFill();
+        BattleManager.getInstance().processNPCAttack(combatantNode, this.getBattleState());
         eventFired = true;
     }
 
@@ -34,7 +36,6 @@ public class EnemyTurnEvent extends TurnEvent {
 
     @Override
     public void setAwaitingUserInput(boolean awaiting) {
-        awaiting = false;
     }
 
     @Override
