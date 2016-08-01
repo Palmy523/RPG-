@@ -50,3 +50,4 @@ build\
 nbproject\
 build
 nbproject
+build/classes/graphics/scene/battle/BattleScene.class

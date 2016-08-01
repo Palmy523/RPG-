@@ -47,7 +47,7 @@ public class BattleScene extends Node {
         switch (type) {
             case DEFAULT:
                 
-                backgroundMusic = new AudioNode(Main.app.getAssetManager(), "Sounds/Boss Battle - FFMQ.ogg");
+                backgroundMusic = new AudioNode(Main.app.getAssetManager(), "Sounds/Music/Battle Music/Undertale - Death by Glamour _ Epic Rock Cover.ogg");
                 
                 Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
                 mat.setColor("Color", new ColorRGBA(0, 0, 255, .5f));

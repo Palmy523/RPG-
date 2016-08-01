@@ -4,6 +4,7 @@
  */
 package game.state.battle;
 
+import com.jme3.audio.AudioNode;
 import game.Main;
 import game.state.StateManager;
 import graphics.combatant.CombatantNode;
@@ -32,6 +33,9 @@ public class BattleManager {
         int intTarget = random.nextInt(max + 1);
         CombatantNode target = targets.get(intTarget);
         target.getHealthBar().decrement(attacker.getCombatant().getATK());
+        AudioNode node = new AudioNode(Main.app.getAssetManager(), "Sounds/Effects/punch.wav");
+        node.setPositional(false);
+        node.play();
         if (target.getHealthBar().getValue() == 0) {
             state.getScene().detachCombatant(target);
         }
