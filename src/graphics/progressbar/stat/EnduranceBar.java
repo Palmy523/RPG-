@@ -14,7 +14,7 @@ import graphics.progressbar.ProgressBar;
 public class EnduranceBar extends ProgressBar {
     
     public EnduranceBar(int currentSkillPoints, int maxSkillPoints) {
-        super(currentSkillPoints, 0, maxSkillPoints, ColorRGBA.Green, ColorRGBA.Red, FillType.Horizontal);
+        super(currentSkillPoints, 0, maxSkillPoints, new ColorRGBA( 0f / 255f, 150f / 255f, 0f / 255f, 1), ColorRGBA.Red, FillType.Horizontal);
         createMesh();
     }
     

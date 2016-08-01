@@ -113,10 +113,10 @@ public class Main extends SimpleApplication {
         ally1.setMaxHealth(100);
         ally1.setCurrentHealth(100);
         ally1.setName("Dudeman");
-        ally1.setMaxMana(25);
-        ally1.setCurrentMana(25);
-        ally1.setMaxEND(100);
-        ally1.setCurrentEND(100);
+        ally1.setMaxMana(999);
+        ally1.setCurrentMana(999);
+        ally1.setMaxEND(999);
+        ally1.setCurrentEND(999);
         ally1.setSPD(1);
         battleStateModel.getAllys().add(ally1);
 
@@ -125,10 +125,10 @@ public class Main extends SimpleApplication {
         ally2.setMaxHealth(100);
         ally2.setCurrentHealth(100);
         ally2.setName("Slappy");
-        ally2.setMaxMana(25);
-        ally2.setCurrentMana(25);
-        ally2.setMaxEND(100);
-        ally2.setCurrentEND(100);
+        ally2.setMaxMana(999);
+        ally2.setCurrentMana(999);
+        ally2.setMaxEND(999);
+        ally2.setCurrentEND(999);
         ally2.setSPD(5);
         battleStateModel.getAllys().add(ally2);
 
@@ -137,10 +137,10 @@ public class Main extends SimpleApplication {
         ally3.setMaxHealth(100);
         ally3.setCurrentHealth(20);
         ally3.setName("Crappy");
-        ally3.setMaxMana(25);
-        ally3.setCurrentMana(25);
-        ally3.setMaxEND(100);
-        ally3.setCurrentEND(100);
+        ally3.setMaxMana(999);
+        ally3.setCurrentMana(999);
+        ally3.setMaxEND(999);
+        ally3.setCurrentEND(999);
         ally3.setSPD(10);
         battleStateModel.getAllys().add(ally3);
 
@@ -149,10 +149,10 @@ public class Main extends SimpleApplication {
         ally4.setMaxHealth(100);
         ally4.setCurrentHealth(100);
         ally4.setName("Happy");
-        ally4.setMaxMana(25);
-        ally4.setCurrentMana(25);
-        ally4.setMaxEND(100);
-        ally4.setCurrentEND(100);
+        ally4.setMaxMana(999);
+        ally4.setCurrentMana(999);
+        ally4.setMaxEND(999);
+        ally4.setCurrentEND(999);
         ally4.setSPD(20);
         battleStateModel.getAllys().add(ally4);
 
