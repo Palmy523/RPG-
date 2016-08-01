@@ -125,8 +125,8 @@ public class Combatant {
     }
 
     public void setSPD(int SPD) {
-        if (SPD < 0) {
-            SPD = 0;
+        if (SPD < 1) {
+            SPD = 1;
         }
         this.SPD = (SPD > Combatant.ABSOLUTE_MAX_SPD) 
                 ? Combatant.ABSOLUTE_MAX_SPD : SPD;

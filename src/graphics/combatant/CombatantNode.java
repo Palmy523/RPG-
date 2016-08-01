@@ -52,7 +52,7 @@ public class CombatantNode extends Node {
         skillBar = new EnduranceBar(combatant.getCurrentEND(), combatant.getMaxEND());
         skillBar.setLocalTranslation(-(skillBar.getWidth() / 2), 1.20f, 0);
         
-        atbGauge = new ATBGauge();
+        atbGauge = new ATBGauge(combatant);
         atbGauge.setLocalTranslation(-1.5f, 1.5f, 0);
         
         this.attachChild(combatantGeom);

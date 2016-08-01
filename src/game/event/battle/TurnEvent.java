@@ -4,7 +4,6 @@
  */
 package game.event.battle;
 
-import com.jme3.math.ColorRGBA;
 import game.state.battle.BattleState;
 import graphics.combatant.CombatantNode;
 
@@ -12,19 +11,13 @@ import graphics.combatant.CombatantNode;
  *
  * @author Dave
  */
-public class TurnEvent extends BattleEvent {
+public abstract class TurnEvent extends BattleEvent {
     
     private CombatantNode combatantNode;
-    private boolean awaitingUserInput = false;
     
-    public TurnEvent(BattleState state, CombatantNode node) {
+    public TurnEvent(BattleState state, CombatantNode combatantNode) {
         super(state);
-        this.combatantNode = node;
-    }
-    
-    @Override
-    public void fireEvent() {
-        combatantNode.getCombatantGeom().getMaterial().setColor("Color", ColorRGBA.White);
+        this.combatantNode = combatantNode;
     }
 
     public CombatantNode getCombatantNode() {
@@ -34,17 +27,11 @@ public class TurnEvent extends BattleEvent {
     public void setCombatantNode(CombatantNode combatantNode) {
         this.combatantNode = combatantNode;
     }
-
-    public boolean isAwaitingUserInput() {
-        return awaitingUserInput;
-    }
-
-    public void setAwaitingUserInput(boolean awaitingUserInput) {
-        this.awaitingUserInput = awaitingUserInput;
-    }
     
+    public abstract boolean isAwaitingUserInput();
     
+    public abstract void setAwaitingUserInput(boolean awaiting);
     
-    
+    public abstract boolean isEventFired();
     
 }

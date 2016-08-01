@@ -4,6 +4,7 @@
  */
 package game.state.battle;
 
+import game.event.battle.AllyTurnEvent;
 import game.event.battle.TurnEvent;
 import java.util.HashMap;
 
@@ -47,7 +48,7 @@ public class TurnEventQueue {
     }
 
     /**
-     * Increments the add position to allow the next TurnEvent to be added in
+     * Increments the add position to allow the next AllyTurnEvent to be added in
      * the appropriate spot in the queue.
      */
     private void incrementAddPosition() {
@@ -59,7 +60,7 @@ public class TurnEventQueue {
     }
 
     /**
-     * Increments the queue to set the queue position to get the TurnEvent of
+     * Increments the queue to set the queue position to get the AllyTurnEvent of
      * the next player in the queue.
      */
     private void incrementTurnPosition() {

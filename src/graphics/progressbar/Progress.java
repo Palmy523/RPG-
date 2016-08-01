@@ -28,7 +28,6 @@ public abstract class Progress extends Node {
     private FillType fillType;
     private int incrementAmount = 1;
     private int decrementAmount = 1;
-
     private boolean isTransitional = true;
     private ColorRGBA transitionToColor = ColorRGBA.Red;
 
@@ -75,10 +74,10 @@ public abstract class Progress extends Node {
     }
 
     public void increment(int amount) {
-        if (value == max) {
-            return;
-        }
         value += amount;
+        if (value > max) {
+            value = max;
+        }
         update();
     }
 
@@ -114,8 +113,17 @@ public abstract class Progress extends Node {
         return value;
     }
 
+    public void reset() {
+        this.value = 0;
+        update();
+    }
+    
     public void setValue(int value) {
+        if (value > max) {
+            value = max;
+        }
         this.value = value;
+        update();
     }
 
     public int getMin() {
@@ -132,6 +140,7 @@ public abstract class Progress extends Node {
 
     public void setMax(int max) {
         this.max = max;
+        this.update();
     }
 
     public ColorRGBA getFilledColor() {
@@ -140,33 +149,33 @@ public abstract class Progress extends Node {
             float red = fill.getRed();
             float green = fill.getGreen();
             float blue = fill.getBlue();
-            
+
             float transitionRed = transitionToColor.getRed();
             float transitionGreen = transitionToColor.getGreen();
             float transitionBlue = transitionToColor.getBlue();
-            
+
             float newRed = Math.abs(red - transitionRed);
             if (red > transitionRed) {
                 newRed = red - (newRed * getUnfilledValue());
             } else {
                 newRed = red + (newRed * getUnfilledValue());
             }
-            
+
             float newGreen = Math.abs(green - transitionGreen);
             if (green > transitionGreen) {
                 newGreen = green - (newGreen * getUnfilledValue());
             } else {
                 newGreen = green + (newGreen * getUnfilledValue());
             }
-            
+
             float newBlue = Math.abs(blue - transitionBlue);
             if (blue > transitionBlue) {
                 newBlue = blue - (newBlue * getUnfilledValue());
             } else {
                 newBlue = blue + (newBlue * getUnfilledValue());
             }
-            
-        
+
+
             return new ColorRGBA(newRed, newGreen, newBlue, 1);
         }
         return filledColor;

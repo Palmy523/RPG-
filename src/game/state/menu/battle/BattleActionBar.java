@@ -14,7 +14,7 @@ public class BattleActionBar extends AbstractMenuController {
 
     @Override
     public String getXMLResource() {
-        return "Interface/Battle/BattleActionBar";
+        return "Interface/Battle/BattleActionBar.xml";
     }
 
     @Override
