@@ -49,13 +49,14 @@ public abstract class AbstractMenuController extends AbstractAppState implements
     @Override
     public void initialize(AppStateManager manager, Application app) {
         super.initialize(manager, app);
-        this.manager = manager;
         this.app = (Main) app;
+        this.manager = manager;
+        nifty = this.app.getNifty();
+        nifty.fromXml(this.getXMLResource(), this.getMenuId());
     }
     
     @Override
     public void onEndScreen() {
-        System.out.println("Ending screen.");
         nifty.removeScreen(getMenuId());
     }
     

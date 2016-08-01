@@ -27,15 +27,6 @@ public class MainMenuState extends AbstractMenuController {
     private AppStateManager manager;
     private static String xmlResource = "Interface/MainMenuLayout.xml";
     private static String id = "main";
-
-        @Override
-    public void initialize(AppStateManager manager, Application app) {
-        super.initialize(manager, app);
-        this.app = (Main) app;
-        this.manager = manager;
-        Nifty nifty = this.app.getNifty();
-        nifty.fromXml(this.getXMLResource(), this.getMenuId());
-    }
         
     @Override
     public void stateDetached(AppStateManager manager) {

@@ -31,8 +31,8 @@ public class Main extends SimpleApplication {
     public static String unshadedMat = "Common/MatDefs/Misc/Unshaded.j3md";
     public static int screenWidth = 1900;
     public static int screenHeight = 900;
-    private static boolean displayStats = false;
-    private static boolean displayFps = false;
+    private static boolean displayStats = true;
+    private static boolean displayFps = true;
 
     /**
      * If I need to explain this, you are already lost.
@@ -117,6 +117,7 @@ public class Main extends SimpleApplication {
         ally1.setCurrentMana(25);
         ally1.setMaxEND(100);
         ally1.setCurrentEND(100);
+        ally1.setSPD(1);
         battleStateModel.getAllys().add(ally1);
 
         Combatant ally2 = new Combatant();
@@ -128,6 +129,7 @@ public class Main extends SimpleApplication {
         ally2.setCurrentMana(25);
         ally2.setMaxEND(100);
         ally2.setCurrentEND(100);
+        ally2.setSPD(5);
         battleStateModel.getAllys().add(ally2);
 
         Combatant ally3 = new Combatant();
@@ -139,6 +141,7 @@ public class Main extends SimpleApplication {
         ally3.setCurrentMana(25);
         ally3.setMaxEND(100);
         ally3.setCurrentEND(100);
+        ally3.setSPD(10);
         battleStateModel.getAllys().add(ally3);
 
         Combatant ally4 = new Combatant();
@@ -150,6 +153,7 @@ public class Main extends SimpleApplication {
         ally4.setCurrentMana(25);
         ally4.setMaxEND(100);
         ally4.setCurrentEND(100);
+        ally4.setSPD(20);
         battleStateModel.getAllys().add(ally4);
 
         Combatant enemy1 = new Combatant();
@@ -161,6 +165,7 @@ public class Main extends SimpleApplication {
         enemy1.setCurrentMana(25);
         enemy1.setMaxEND(100);
         enemy1.setCurrentEND(100);
+        enemy1.setSPD(40);
         enemy1.setType(CombatantType.Enemy);
         battleStateModel.getEnemies().add(enemy1);
 
@@ -173,6 +178,7 @@ public class Main extends SimpleApplication {
         enemy2.setCurrentMana(25);
         enemy2.setMaxEND(100);
         enemy2.setCurrentEND(100);
+        enemy2.setSPD(80);
         enemy2.setType(CombatantType.Enemy);
         battleStateModel.getEnemies().add(enemy2);
 
@@ -185,6 +191,7 @@ public class Main extends SimpleApplication {
         enemy3.setCurrentMana(25);
         enemy3.setMaxEND(100);
         enemy3.setCurrentEND(100);
+        enemy3.setSPD(160);
         enemy3.setType(CombatantType.Enemy);
         battleStateModel.getEnemies().add(enemy3);
 
@@ -197,6 +204,7 @@ public class Main extends SimpleApplication {
         enemy4.setCurrentMana(25);
         enemy4.setMaxEND(100);
         enemy4.setCurrentEND(100);
+        enemy4.setSPD(320);
         enemy4.setType(CombatantType.Enemy);
         battleStateModel.getEnemies().add(enemy4);
 

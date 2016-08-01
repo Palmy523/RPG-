@@ -24,6 +24,7 @@ public abstract class AbstractGameEventBus implements GameEventBus {
         for (GameEvent event : events) {
             processEvent(event);
         }
+        events.clear();
     }
     
     @Override

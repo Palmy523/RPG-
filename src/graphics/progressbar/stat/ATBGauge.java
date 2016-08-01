@@ -5,6 +5,7 @@
 package graphics.progressbar.stat;
 
 import com.jme3.math.ColorRGBA;
+import component.battle.combatant.Combatant;
 import graphics.progressbar.ProgressCircle;
 
 /**
@@ -13,12 +14,20 @@ import graphics.progressbar.ProgressCircle;
  */
 public class ATBGauge extends ProgressCircle {
     
-    public ATBGauge() {
-        super(40, 0, 0, 500, new ColorRGBA(0, 0, 0, 0), ColorRGBA.Cyan);
+    private static int ABSOLUTE_MAX = 5000;
+    private Combatant combatant;
+    
+    public ATBGauge(Combatant combatant) {
+        super(100, 0, 0, 1000, new ColorRGBA(0, 0, 0, 0), ColorRGBA.Cyan);
         createMesh();
+        int SPD = combatant.getSPD();
+        double ln = Math.log(SPD);
+        ln = 5 * ln;
+        double sqrt = Math.sqrt(2.25f * SPD);
+        this.setMax((int) (ABSOLUTE_MAX - ((ABSOLUTE_MAX / 100) * (ln + sqrt - 1.5))));
     }
     
     public boolean isFull() {
-        return this.getValue() == this.getMax();
+        return this.getValue() >= this.getMax();
     }
 }

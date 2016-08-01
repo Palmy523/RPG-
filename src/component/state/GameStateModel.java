@@ -4,10 +4,6 @@
  */
 package component.state;
 
-import com.jme3.app.Application;
-import com.jme3.app.state.AppState;
-import com.jme3.app.state.AppStateManager;
-import com.jme3.renderer.RenderManager;
 import component.battle.combatant.Combatant;
 import component.user.User;
 import java.util.HashMap;
