@@ -69,9 +69,7 @@ public class BattleState extends AbstractAppState {
 
     private void updateATBGauge() {
         for (CombatantNode node : scene.getCombatantMap().values()) {
-           node.getManaBar().decrement();
-           node.getSkillBar().decrement();
-            if (node.getAtbGauge().isFull()) {
+              if (node.getAtbGauge().isFull()) {
                 //node.getAtbGauge().clearFill();
                 queueTurn(node);
             } else {
