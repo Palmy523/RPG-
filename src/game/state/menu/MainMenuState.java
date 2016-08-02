@@ -7,15 +7,15 @@ package game.state.menu;
 import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.audio.AudioNode;
-import component.state.BattleStateModel;
+import game.battle.component.BattleStateModel;
 import controller.menu.AbstractMenuController;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
 import game.Main;
 import game.audio.AudioManager;
-import game.state.GameState;
-import game.state.StateManager;
+import game.GameState;
+import game.StateManager;
 
 /**
  *

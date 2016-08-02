@@ -14,6 +14,11 @@ public class Combatant {
      * Enumerator to distinguish between enemy types.
      */
     public static enum CombatantType {Ally, Enemy, Neutral}
+    
+    /**
+     * Enumerator for player attack type.
+     */
+    public static enum AttackType {ALL, SINGLE}
 
     /**
      * Max health setting.
@@ -99,6 +104,11 @@ public class Combatant {
      * The players Defense setting.
      */
     private int DEF;
+    
+    /**
+     * The attack type for the combatant.
+     */
+    private AttackType attackType = AttackType.SINGLE;
     
     /**
      * The players CombatantType.
@@ -235,6 +245,14 @@ public class Combatant {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public AttackType getAttackType() {
+        return attackType;
+    }
+
+    public void setAttackType(AttackType attackType) {
+        this.attackType = attackType;
     }
     
     

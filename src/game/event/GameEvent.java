@@ -10,6 +10,4 @@ package game.event;
  */
 public interface GameEvent {
     
-    public void fireEvent();
-    
 }

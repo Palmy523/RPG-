@@ -8,14 +8,11 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.system.AppSettings;
 import component.battle.combatant.Combatant;
 import component.battle.combatant.Combatant.CombatantType;
-import component.state.BattleStateModel;
+import game.battle.component.BattleStateModel;
 import component.state.GameStateModel;
 import component.user.User;
 import de.lessvoid.nifty.Nifty;
-import graphics.combatant.CombatantNode;
 import static game.Main.app;
-import game.state.GameState;
-import game.state.StateManager;
 
 /**
  * Main app entry point.
@@ -118,6 +115,7 @@ public class Main extends SimpleApplication {
         ally1.setMaxEND(999);
         ally1.setCurrentEND(999);
         ally1.setSPD(1);
+        ally1.setATK(10);
         battleStateModel.getAllys().add(ally1);
 
         Combatant ally2 = new Combatant();
@@ -130,6 +128,7 @@ public class Main extends SimpleApplication {
         ally2.setMaxEND(999);
         ally2.setCurrentEND(999);
         ally2.setSPD(5);
+        ally2.setATK(20);
         battleStateModel.getAllys().add(ally2);
 
         Combatant ally3 = new Combatant();
@@ -142,6 +141,7 @@ public class Main extends SimpleApplication {
         ally3.setMaxEND(999);
         ally3.setCurrentEND(999);
         ally3.setSPD(10);
+        ally3.setATK(5);
         battleStateModel.getAllys().add(ally3);
 
         Combatant ally4 = new Combatant();
@@ -154,6 +154,7 @@ public class Main extends SimpleApplication {
         ally4.setMaxEND(999);
         ally4.setCurrentEND(999);
         ally4.setSPD(20);
+        ally4.setATK(50);
         battleStateModel.getAllys().add(ally4);
 
         Combatant enemy1 = new Combatant();
