@@ -10,7 +10,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
 import controller.menu.AbstractMenuController;
-import game.Main;
+import game.Game;
 import game.battle.BattleState;
 import game.battle.action.AttackAction;
 import game.battle.graphics.CombatantNode;
@@ -42,7 +42,6 @@ public class BattleActionBar extends AbstractMenuController {
 
     public void stateDettached() {
         deregisterControls();
-        Main.app.getNifty().exit();
     }
 
     private void registerControls() {
@@ -71,7 +70,12 @@ public class BattleActionBar extends AbstractMenuController {
         super.setEnabled(enabled);
         if (!enabled) {
             this.getApp().getInputManager().removeListener(actionListener);
+            this.getNifty().removeScreen(this.getMenuId());
         } else {
+            if (this.getNifty() != null) {
+                this.getNifty().addScreen(this.getMenuId(), this.getScreen());
+                this.getNifty().update();
+            }
             if (actionListener != null) {
                 this.getApp().getInputManager().addListener(actionListener, new String[]{"Attack"});
             }

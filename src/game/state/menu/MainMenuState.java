@@ -12,7 +12,7 @@ import controller.menu.AbstractMenuController;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
-import game.Main;
+import game.Game;
 import game.audio.AudioManager;
 import game.GameState;
 import game.StateManager;
@@ -23,7 +23,7 @@ import game.StateManager;
  */
 public class MainMenuState extends AbstractMenuController {
 
-    private Main app;
+    private Game app;
     private AppStateManager manager;
     private static String xmlResource = "Interface/MainMenuLayout.xml";
     private static String id = "main";
@@ -56,7 +56,7 @@ public class MainMenuState extends AbstractMenuController {
     
     @NiftyEventSubscriber(id="play")
     public void play(String id, ButtonClickedEvent event) {
-        BattleStateModel model = GameState.getInstance().getBattleStateModel();
+        BattleStateModel model = Game.getGameState().getBattleStateModel();
         StateManager.getStateManager().loadBattle(model);
         this.getNifty().exit();
     }
@@ -68,7 +68,7 @@ public class MainMenuState extends AbstractMenuController {
     
     @NiftyEventSubscriber(id="playMusic")
     public void playMusic(String id, ButtonClickedEvent event) {
-        AudioNode node = new AudioNode(Main.app.getAssetManager(), "Sounds/Battle.ogg");
+        AudioNode node = new AudioNode(Game.app.getAssetManager(), "Sounds/Battle.ogg");
         node.setPositional(false);
         AudioManager.getInstance().playBackgroundMusic(node);
     }

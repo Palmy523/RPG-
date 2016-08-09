@@ -10,7 +10,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.KeyTrigger;
-import game.Main;
+import game.Game;
 import game.battle.action.BattleAction;
 import game.battle.graphics.BattleScene;
 import game.battle.graphics.CombatantNode;
@@ -35,7 +35,7 @@ public class SelectionState extends AbstractAppState {
     private int numEnemies;
     private BattleState state;
     private BattleScene scene;
-    private Main app;
+    private Game app;
     private AppStateManager manager;
     private CombatantNode actor;
     private CombatantNode target;
@@ -50,7 +50,7 @@ public class SelectionState extends AbstractAppState {
 
     @Override
     public void initialize(AppStateManager manager, Application app) {
-        this.app = (Main) app;
+        this.app = (Game) app;
         this.manager = manager;
     }
 
@@ -94,22 +94,24 @@ public class SelectionState extends AbstractAppState {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         if (enabled) {
-            Main.app.getInputManager().addListener(listener, new String[]{"CursorUp", "CursorDown", "SwitchSides", "ProcessAction"});
+            Game.app.getInputManager().addListener(listener, new String[]{"CursorUp", "CursorDown", "SwitchSides", "ProcessAction"});
             if (target != null) {
                 target.select(true);
             }
         } else {
-            Main.app.getInputManager().removeListener(listener);
-            target.select(false);
+            Game.app.getInputManager().removeListener(listener);
+            if (target != null) {
+                target.select(false);
+            }
         }
     }
 
     private void registerControls() {
-        Main.app.getInputManager().addMapping("CursorUp", new KeyTrigger(KeyInput.KEY_W));
-        Main.app.getInputManager().addMapping("CursorDown", new KeyTrigger(KeyInput.KEY_S));
-        Main.app.getInputManager().addMapping("SwitchSides", new KeyTrigger(KeyInput.KEY_A));
-        Main.app.getInputManager().addMapping("SwitchSides", new KeyTrigger(KeyInput.KEY_D));
-        Main.app.getInputManager().addMapping("ProcessAction", new KeyTrigger(KeyInput.KEY_SPACE));
+        Game.app.getInputManager().addMapping("CursorUp", new KeyTrigger(KeyInput.KEY_W));
+        Game.app.getInputManager().addMapping("CursorDown", new KeyTrigger(KeyInput.KEY_S));
+        Game.app.getInputManager().addMapping("SwitchSides", new KeyTrigger(KeyInput.KEY_A));
+        Game.app.getInputManager().addMapping("SwitchSides", new KeyTrigger(KeyInput.KEY_D));
+        Game.app.getInputManager().addMapping("ProcessAction", new KeyTrigger(KeyInput.KEY_SPACE));
 
         listener = new ActionListener() {
             @Override
@@ -137,7 +139,7 @@ public class SelectionState extends AbstractAppState {
     }
 
     private void deregisterControls() {
-        Main.app.getInputManager().removeListener(listener);
+        Game.app.getInputManager().removeListener(listener);
     }
 
     private void cursorDown() {

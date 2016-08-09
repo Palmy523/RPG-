@@ -9,12 +9,13 @@ import com.jme3.audio.AudioNode;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import component.battle.combatant.Combatant;
 import game.battle.component.BattleStateModel;
-import game.Main;
+import game.Game;
 import graphics.scene.Scene.SceneType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,7 +37,7 @@ public class BattleScene extends Node {
         allys = new ArrayList<>();
         enemies = new ArrayList<>();
         combatantMap = new HashMap<>();
-        AssetManager assetManager = Main.app.getAssetManager();
+        AssetManager assetManager = Game.app.getAssetManager();
         Box backdropMesh = new Box(30, 30, .01f);
         Box battlegroundMesh = new Box(20, .01f, 20);
         Geometry backdropGeom = new Geometry("Background", backdropMesh);
@@ -46,7 +47,7 @@ public class BattleScene extends Node {
         switch (type) {
             case DEFAULT:
                 
-                backgroundMusic = new AudioNode(Main.app.getAssetManager(), "Sounds/Music/Battle Music/Undertale - Death by Glamour _ Epic Rock Cover.ogg");
+                backgroundMusic = new AudioNode(Game.app.getAssetManager(), "Sounds/Music/Battle Music/Undertale - Death by Glamour _ Epic Rock Cover.ogg");
                 
                 Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
                 mat.setColor("Color", new ColorRGBA(0, 0, 255, .5f));
@@ -61,12 +62,13 @@ public class BattleScene extends Node {
         battleground = new Node("BattleGround");
 
         float allyStartX = 5.5f;
-        float allyStartY = .75f;
+        float allyStartY = 0.75f;
         float allyStartZ = 4;
         
         for (Combatant combatant : model.getAllys()) {
             CombatantNode combatantNode = new CombatantNode(combatant, null);
             combatantNode.setLocalTranslation(allyStartX, allyStartY, allyStartZ);
+            combatantNode.setStartingPosition(new Vector3f(allyStartX, allyStartY, allyStartZ));
             battleground.attachChild(combatantNode);
             allyStartZ -= 3.5f;
             allys.add(combatantNode);
@@ -77,12 +79,13 @@ public class BattleScene extends Node {
         for (Combatant combatant : model.getEnemies()) {
             CombatantNode combatantNode = new CombatantNode(combatant, null);
             combatantNode.setLocalTranslation(-allyStartX, allyStartY, allyStartZ);
+            combatantNode.setStartingPosition(new Vector3f(-allyStartX, allyStartY, allyStartZ));
             battleground.attachChild(combatantNode);
             allyStartZ -= 3.5f;
             enemies.add(combatantNode);
             combatantMap.put(combatant.getId(), combatantNode);
         }
-
+        
         battleground.setLocalTranslation(0, -3, -5);
         battleground.rotate(FastMath.DEG_TO_RAD * 10, 0, 0);
         battleground.attachChild(battlegroundGeom);

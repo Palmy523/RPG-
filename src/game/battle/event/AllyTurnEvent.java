@@ -5,7 +5,7 @@
 package game.battle.event;
 
 import com.jme3.audio.AudioNode;
-import game.Main;
+import game.Game;
 import game.battle.BattleState;
 import game.battle.graphics.CombatantNode;
 
@@ -20,13 +20,13 @@ public class AllyTurnEvent extends OnTurnEvent {
     private AudioNode audioNode ;
     
     public AllyTurnEvent(BattleState state, CombatantNode node) {
-        audioNode = new AudioNode(Main.app.getAssetManager(), "Sounds/Effects/shotgun.wav");
+        audioNode = new AudioNode(Game.app.getAssetManager(), "Sounds/Effects/shotgun.wav");
         audioNode.setPositional(false);
     }
     
     public void fireEvent() {
 //        this.getCombatantNode().turnHighlight(true);
-//        Main.app.getStateManager().attach(new BattleActionBar(this.getBattleState(), this.getCombatantNode()));
+//        Game.app.getStateManager().attach(new BattleActionBar(this.getBattleState(), this.getCombatantNode()));
 //        audioNode.play();
 //        eventFired = true;
     }

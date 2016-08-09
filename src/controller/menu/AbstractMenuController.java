@@ -10,7 +10,7 @@ import com.jme3.app.state.AppStateManager;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
-import game.Main;
+import game.Game;
 
 /**
  *The AbstractMenuController is used to initialize menu data app, manager, nifty, 
@@ -23,7 +23,7 @@ public abstract class AbstractMenuController extends AbstractAppState implements
     /**
      * The main application.
      */
-    private Main app;
+    private Game app;
     
     /**
      * The apps AppStateManager.
@@ -49,7 +49,7 @@ public abstract class AbstractMenuController extends AbstractAppState implements
     @Override
     public void initialize(AppStateManager manager, Application app) {
         super.initialize(manager, app);
-        this.app = (Main) app;
+        this.app = (Game) app;
         this.manager = manager;
         nifty = this.app.getNifty();
         nifty.fromXml(this.getXMLResource(), this.getMenuId());
@@ -84,11 +84,11 @@ public abstract class AbstractMenuController extends AbstractAppState implements
      */
     public abstract String getMenuId();
 
-    public Main getApp() {
+    public Game getApp() {
         return app;
     }
 
-    public void setApp(Main app) {
+    public void setApp(Game app) {
         this.app = app;
     }
 

@@ -6,18 +6,26 @@ package game.battle.graphics;
 
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
+import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.shape.Box;
 import component.battle.combatant.Combatant;
-import game.Main;
-import game.battle.BattleManager;
+import component.battle.combatant.Combatant.CombatantType;
+import game.Game;
+import game.battle.component.Attacks;
+import game.battle.component.Moves;
+import game.battle.graphics.animation.attack.BasicSlashAnimation;
+import game.graphics.animation.AbstractAnimation;
+import graphics.shapes.Sword;
 
 /**
  *
  * @author Dave
  */
-public class CombatantNode extends Node {
+public class CombatantNode extends Node implements Moves, Attacks {
 
     
     private Combatant combatant;
@@ -28,20 +36,22 @@ public class CombatantNode extends Node {
     private Geometry combatantGeom;
     private Geometry selectionCursor;
     private ColorRGBA original;
+    private Vector3f startingPosition;
+    private Sword sword;
 
     public CombatantNode(Combatant combatant, String id) {
         this.combatant = combatant;
         
         Box selectionBox = new Box(0.75f, .05f, 0.75f);
         selectionCursor = new Geometry("Cursor", selectionBox);
-        Material cursorMat = Main.app.getUnshadedMat();
+        Material cursorMat = Game.app.getUnshadedMat();
         cursorMat.setColor("Color", ColorRGBA.White);
         selectionCursor.setMaterial(cursorMat);
         selectionCursor.setLocalTranslation(0, -0.70f, 0);
         
         Box box = new Box(0.5f, 0.75f, 0.5f);
         combatantGeom = new Geometry("Combatant", box);
-        Material mat = new Material(Main.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat = new Material(Game.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
         switch(combatant.getType()) {
             case Ally : original = ColorRGBA.Green.mult(0.75f); break;
             case Enemy : original = ColorRGBA.Red.mult(0.75f); break;
@@ -62,11 +72,21 @@ public class CombatantNode extends Node {
         atbGauge = new ATBGauge(combatant);
         atbGauge.setLocalTranslation(-1.5f, 1.5f, 0);
         
+        sword = new Sword();
+        sword.scale(.2f);
+        sword.rotate(0, 0, FastMath.DEG_TO_RAD * 45);
+        sword.setLocalTranslation(0, 0, 1);
+        if (combatant.getType() == CombatantType.Enemy) {
+            sword.rotate(0, FastMath.DEG_TO_RAD * 180, 0);
+        }
+        
         this.attachChild(combatantGeom);
         this.attachChild(healthBar);
         this.attachChild(manaBar);
         this.attachChild(skillBar);
         this.attachChild(atbGauge);
+        this.attachChild(sword);
+        
     }
     
     public void select(boolean select) {
@@ -148,5 +168,23 @@ public class CombatantNode extends Node {
     public void setHealth(int health) {
         this.combatant.setCurrentHealth(health);
         this.getHealthBar().setValue(health);
+    }
+
+    public Vector3f getStartingPosition() {
+        return startingPosition;
+    }
+
+    public void setStartingPosition(Vector3f startingPosition) {
+        this.startingPosition = startingPosition;
+    }
+
+    @Override
+    public AbstractAnimation getMoveAnimation() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public AbstractAnimation getAttackAnimation() {
+        return new BasicSlashAnimation(sword);
     }
 }

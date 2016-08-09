@@ -9,7 +9,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Quad;
 import graphics.shapes.BoxOutline2D;
-import game.Main;
+import game.Game;
 
 /**
  *
@@ -64,18 +64,18 @@ public class ProgressBar extends Progress {
         
         Quad quad = new Quad(width * filledValue, height);
         filledBar = new Geometry("Filled", quad);
-        Material mat1 = new Material(Main.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+        Material mat1 = new Material(Game.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
         mat1.setColor("Color", color1);
         filledBar.setMaterial(mat1);
         
 //        Quad quad2 = new Quad(width * unfilledValue, height);
 //        unfilledBar = new Geometry("Unfilled", quad2);
-//        Material mat2 = new Material(Main.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
+//        Material mat2 = new Material(Game.app.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
 //        mat2.setColor("Color", color2);
 //        unfilledBar.setMaterial(mat2);
 //        unfilledBar.setLocalTranslation(filledValue * width, 0, 0);
 
-        Material black = Main.app.getUnshadedMat();
+        Material black = Game.app.getUnshadedMat();
         black.setColor("Color", ColorRGBA.Black);
         BoxOutline2D outline = new BoxOutline2D(width, height, 4, black);
 

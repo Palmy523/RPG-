@@ -6,39 +6,37 @@ package game;
 
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import game.battle.component.BattleStateModel;
 import component.state.GameStateModel;
-import game.Main;
+import game.state.AbstractGameState;
 import game.state.menu.MainMenuState;
 
 /**
  *
  * @author Dave
  */
-public class GameState extends AbstractAppState {
+public class GameState extends AbstractGameState {
 
+    private String userId;
     public static enum Type {Start, WorldMap, Battle, Environment};
     private GameStateModel model;
     private AppStateManager manager;
-    private SimpleApplication app;
+    private Game app;
     private Type type;
     private static GameState instance;
     private static AppState currentState;
     private static BattleStateModel battleStateModel;
     
     
-    public GameState() {
-       setInstance(this);
+    public GameState(String userId) {
+        this.userId = userId;
     }
     
     @Override
     public void initialize(AppStateManager manager, Application app) {
-        this.manager = manager;
-        this.app = (Main) app;
-        this.app.getStateManager().attach(new MainMenuState());
+        this.getApp().getStateManager().attach(new MainMenuState());
     }
     
     public GameState(GameStateModel model) {
@@ -53,13 +51,6 @@ public class GameState extends AbstractAppState {
         this.model = model;
     }
     
-    public static GameState getInstance() {
-        if (instance == null) {
-            instance = new GameState();
-        }
-        return instance;
-    }
-    
     public void setInstance(GameState state) {
         instance = state;
     }
@@ -72,11 +63,7 @@ public class GameState extends AbstractAppState {
         this.manager = manager;
     }
 
-    public SimpleApplication getApp() {
-        return app;
-    }
-
-    public void setApp(SimpleApplication app) {
+    public void setApp(Game app) {
         this.app = app;
     }
 

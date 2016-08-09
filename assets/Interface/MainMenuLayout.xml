@@ -9,7 +9,7 @@
     <screen id="main" controller="game.state.menu.MainMenuState">
         <layer id="foreground" childLayout="center">
             <panel id="panel_background" backgroundColor="#000000ff" padding="100" width= "100%" height="100%" childLayout="center">
-                <control name="label" valign="top" color="#ffffffff" text="Butt Bag Obliterator ver 0.1"></control>
+                <control name="label" valign="top" color="#ffffffff" text="Crossing Swords ver 0.1"></control>
                <panel id="panel_center" backgroundColor="#a9a9a9ff" width="500" height="300" childLayout="center">
                    <panel id="button_panel_1" height="25%" valign="top" childLayout="center">
                         <control id="play" name="button" valign="bottom" label="Play" />

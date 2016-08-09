@@ -7,7 +7,7 @@ package graphics.progressbar;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import graphics.shapes.FillCircle;
-import game.Main;
+import game.Game;
 
 /**
  *
@@ -49,7 +49,7 @@ public class ProgressCircle extends Progress {
 
     @Override
     public void createMesh() {
-        Material mat = Main.app.getUnshadedMat();
+        Material mat = Game.app.getUnshadedMat();
         mat.setColor("Color", getUnfilledColor());
         circle = new FillCircle(.25f, samples, mat, getFilledValue());
         

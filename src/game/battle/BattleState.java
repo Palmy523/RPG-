@@ -12,7 +12,7 @@ import com.jme3.audio.AudioNode;
 import component.battle.combatant.Combatant;
 import component.battle.combatant.Combatant.CombatantType;
 import game.battle.component.BattleStateModel;
-import game.Main;
+import game.Game;
 import game.StateManager;
 import game.audio.AudioManager;
 import game.battle.SelectionState.SelectionSide;
@@ -28,9 +28,12 @@ import game.battle.menu.BattleActionBar;
 import game.error.GameException;
 import game.event.GameEvent;
 import game.eventhandler.GameEventHandler;
+import game.battle.graphics.animation.ActionAnimation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -38,29 +41,35 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class BattleState extends AbstractAppState {
 
-    private Main app;
+    private Game app;
     private AppStateManager manager;
     private BattleStateModel model;
     private BattleScene scene;
     private BattleEventBus eventBus;
     private ArrayBlockingQueue turnQueue;
+    private ArrayBlockingQueue enemyTurnQueue;
     private long startTime = System.currentTimeMillis();
     private double atbUpdateStat = 0;
     private SelectionState selectionState;
     private BattleActionBar actionBarState;
     private static BattleState instance;
     private CombatantNode currentTurnNode;
+    private CombatantNode enemyTurnNode;
     private List<CombatantNode> combatantRemovalList;
     private boolean pauseATBUpdate = false;
+    
     private boolean allyTurnProcessing;
+    private boolean enemyTurnProcessing;
 
     public BattleState(BattleStateModel model) {
         this.model = model;
         eventBus = new BattleEventBus();
         combatantRemovalList = new ArrayList<>();
-        this.turnQueue = new ArrayBlockingQueue(4);
+        this.turnQueue = new ArrayBlockingQueue(model.getAllys().size());
+        this.enemyTurnQueue = new ArrayBlockingQueue(model.getEnemies().size());
         registerHandlers();
         BattleManager.getInstance().setBattleState(this);
+        instance = this;
     }
 
     private void registerHandlers() {
@@ -69,13 +78,30 @@ public class BattleState extends AbstractAppState {
             public void onEvent(GameEvent e) {
                 OnTurnEvent event = (OnTurnEvent) e;
                 CombatantNode node = event.getCombatantNode();
-                if (!turnQueue.contains(node) && node != currentTurnNode) {
-                    turnQueue.add(node);
+                CombatantType type = node.getCombatant().getType();
+
+                if (type == CombatantType.Ally) {
+                    if (!turnQueue.contains(node) && node != currentTurnNode) {
+                        turnQueue.add(node);
+                    }
+
+                    if (!allyTurnProcessing) {
+                        setAllyTurnProcessing(true);
+                        currentTurnNode = (CombatantNode) turnQueue.poll();
+                        initiateTurn(currentTurnNode);
+                    }
                 }
-                if (!allyTurnProcessing) {
-                    setAllyTurnProcessing(true);
-                    currentTurnNode = (CombatantNode) turnQueue.poll();
-                    initiateTurn(currentTurnNode);
+                
+                if (type == CombatantType.Enemy) {
+                    if (!enemyTurnQueue.contains(node) && node != enemyTurnNode) {
+                        enemyTurnQueue.add(node);
+                    }
+                    
+                    if (!enemyTurnProcessing) {
+                        enemyTurnProcessing = true;
+                        enemyTurnNode = (CombatantNode) enemyTurnQueue.poll();
+                        processNPCAction(node);
+                    }
                 }
             }
         };
@@ -87,21 +113,8 @@ public class BattleState extends AbstractAppState {
             public void onEvent(GameEvent e) {
                 ActionEvent event = (ActionEvent) e;
                 CombatantNode node = event.getActor();
-                Combatant combatant = node.getCombatant();
-                CombatantNode target;
-                if (combatant.getType() == CombatantType.Enemy) {
-                    target = processCombatantAction(node);
-                    if (target.getHealthBar().getValue() == 0) {
-                        try {
-                            eventBus.fireCombatantRemovalEvent(target);
-                        } catch (GameException ex) {
-                            System.err.println(ex.getMessage());
-                        }
-                    }
-                } else {
-                    event.getAction().setTargets(event.getTargets());
-                    processCombatantAction(node, event.getAction());
-                }
+                event.getAction().setTargets(event.getTargets());
+                processCombatantAction(node, event.getAction());
             }
         };
 
@@ -110,8 +123,6 @@ public class BattleState extends AbstractAppState {
         GameEventHandler onCombatantDeath = new GameEventHandler() {
             @Override
             public void onEvent(GameEvent e) {
-                CombatantDeathEvent event = (CombatantDeathEvent) e;
-                queueCombatantForRemoval(event.getCombatantNode());
 
             }
         };
@@ -121,7 +132,7 @@ public class BattleState extends AbstractAppState {
         GameEventHandler onTargetSelectionEvent = new GameEventHandler() {
             @Override
             public void onEvent(GameEvent e) {
-                
+
                 TargetSelectionEvent event = (TargetSelectionEvent) e;
                 loadTargetSelectionState(event.getAction());
             }
@@ -133,7 +144,7 @@ public class BattleState extends AbstractAppState {
     @Override
     public void initialize(AppStateManager manager, Application app) {
         this.manager = manager;
-        this.app = (Main) app;
+        this.app = (Game) app;
         scene = new BattleScene(model, SceneType.DEFAULT);
         AudioNode backgroundMusic = scene.getBackgroundMusic();
         backgroundMusic.setPositional(false);
@@ -144,7 +155,7 @@ public class BattleState extends AbstractAppState {
         if (actionBarState == null) {
             actionBarState = new BattleActionBar();
         }
-        
+
         this.app.getRootNode().attachChild(scene);
     }
 
@@ -166,19 +177,10 @@ public class BattleState extends AbstractAppState {
         if (!pauseATBUpdate) {
             for (CombatantNode node : scene.getCombatantMap().values()) {
                 if (node.getAtbGauge().isFull()) {
-                    CombatantType type = node.getCombatant().getType();
-                    if (type == CombatantType.Enemy) {
-                        try {
-                            eventBus.fireOnActionEvent(node, null, null);
-                        } catch (GameException ex) {
-                            System.err.println(ex.getMessage());
-                        }
-                    } else {
-                        try {
-                            eventBus.fireOnTurnEvent(node);
-                        } catch (GameException ex) {
-                            System.err.println(ex.getMessage());
-                        }
+                    try {
+                        eventBus.fireOnTurnEvent(node);
+                    } catch (GameException ex) {
+                        System.err.println(ex.getMessage());
                     }
                 } else {
                     node.incrementATBGauge((int) atbUpdateStat);
@@ -195,34 +197,50 @@ public class BattleState extends AbstractAppState {
      * @param combatant the combatant to initiate the turn for.
      */
     private void initiateTurn(CombatantNode combatant) {
+        actionBarState = null;
+        actionBarState = new BattleActionBar();
+        actionBarState.setEnabled(true);
         actionBarState.setState(this);
         actionBarState.setActor(combatant);
         combatant.turnHighlight(true);
-        actionBarState.setEnabled(true);
-        Main.app.getStateManager().attach(this.actionBarState);
+        Game.app.getStateManager().attach(this.actionBarState);
     }
 
-    private CombatantNode processCombatantAction(CombatantNode node) {
+    private void processNPCAction(CombatantNode node) {
+        BattleManager.getInstance().processNPCAttack(node, this);
+    }
+
+    public void processCombatantAction(CombatantNode node, BattleAction action) {
+        ActionAnimation animation = new ActionAnimation(action);
+        this.manager.attach(animation);
+    }
+
+    public boolean isATBPaused() {
+        return pauseATBUpdate;
+    }
+    
+    public void pauseATBUpdate(boolean paused) {
+        this.pauseATBUpdate = paused;
+    }
+
+    public void resetState(CombatantNode node) {
         node.getAtbGauge().clearFill();
-        return BattleManager.getInstance().processNPCAttack(node, this);
-    }
-
-    private void processCombatantAction(CombatantNode node, BattleAction action) {
-        action.processAction();
-        resetState(node);
-    }
-
-    private void resetState(CombatantNode node) {
-        node.getAtbGauge().clearFill();
-        node.turnHighlight(false);
-        this.allyTurnProcessing = false;
-        this.currentTurnNode = null;
-        selectionState.setEnabled(false);
-        actionBarState.setEnabled(false);
+        if (node.getCombatant().getType() == Combatant.CombatantType.Enemy) {
+            enemyTurnNode = null;
+            enemyTurnProcessing = false;
+        }
+        if (node.getCombatant().getType() == Combatant.CombatantType.Ally) {
+            node.turnHighlight(false);
+            this.allyTurnProcessing = false;
+            this.currentTurnNode = null;
+            selectionState.setEnabled(false);
+            actionBarState.setEnabled(false);
+        }
     }
 
     public void loadTargetSelectionState(BattleAction action) {
         actionBarState.setEnabled(false);
+        this.manager.detach(actionBarState);
         switch (action.getTargetSelectionType()) {
             case ENEMY_SINGLE:
                 selectionState.setSelectionSide(SelectionSide.ENEMY);
@@ -260,6 +278,11 @@ public class BattleState extends AbstractAppState {
     private void removeCombatants() {
         for (CombatantNode node : this.combatantRemovalList) {
             scene.detachCombatant(node);
+            try {
+                eventBus.fireCombatantRemovalEvent(node);
+            } catch (GameException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
         checkWinLose();
     }

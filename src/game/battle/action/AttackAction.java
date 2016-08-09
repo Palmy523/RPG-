@@ -4,69 +4,39 @@
  */
 package game.battle.action;
 
-import component.battle.combatant.Combatant.AttackType;
+import com.jme3.math.Vector3f;
+import component.battle.combatant.Combatant;
 import game.battle.BattleManager;
+import game.battle.BattleState;
 import game.battle.graphics.CombatantNode;
-import java.util.ArrayList;
-import java.util.List;
+import game.battle.graphics.animation.MoveAnimationVector;
 
 /**
  *
  * @author Dave
  */
-public class AttackAction implements BattleAction {
+public class AttackAction extends AbstractBattleAction {
 
-    private CombatantNode actor;
-    private TargetSelectionType attackType;
-    private List<CombatantNode> targets;
-    
-    public AttackAction(CombatantNode node) {
-        targets = new ArrayList<>();
-        actor = node;
-        AttackType type = node.getCombatant().getAttackType();
-        if (type == AttackType.ALL) {
-            attackType = TargetSelectionType.ALL_ENEMIES;
+    public AttackAction(CombatantNode actor) {
+        super(actor);
+        Vector3f actorPosition = actor.getStartingPosition();
+        Vector3f movementVector;
+        if (actor.getCombatant().getType() == Combatant.CombatantType.Enemy) {
+            movementVector = new Vector3f(actorPosition.x + 2.0f, actorPosition.y, actorPosition.z);
         } else {
-            attackType = TargetSelectionType.ENEMY_SINGLE;
+            movementVector = new Vector3f(actorPosition.x - 2.0f, actorPosition.y, actorPosition.z);
         }
-    }
-
-    @Override
-    public TargetSelectionType getTargetSelectionType() {
-        return attackType;
-    }
-
-    @Override
-    public void setAttackType(TargetSelectionType type) {
-        this.attackType = type;
-    }
-
-    public List<CombatantNode> getTargets() {
-        return targets;
-    }
-
-    public void setTargets(List<CombatantNode> targets) {
-        this.targets = targets;
+        MoveAnimationVector moveAnimation = new MoveAnimationVector(actor, movementVector);
+        this.setMoveAnimation(moveAnimation);
+        this.setActionAnimation(actor.getAttackAnimation());
     }
     
     @Override
     public void processAction() {
-        for (CombatantNode target : targets) {
-            BattleManager.getInstance().attack(actor, target);
+        for (CombatantNode target : this.getTargets()) {
+            BattleManager.getInstance().attack(this.getActor(), target);
         }
+        BattleState.getInstance().resetState(this.getActor());
     }
-
-    public CombatantNode getActor() {
-        return actor;
-    }
-
-    public void setActor(CombatantNode actor) {
-        this.actor = actor;
-    }
-    
-    
-
-    
-    
     
 }

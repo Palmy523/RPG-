@@ -49,7 +49,6 @@ public class BattleEventBus {
     }
     
     public void fireCombatantRemovalEvent(CombatantNode combatantNode) throws GameException {
-        System.out.println("Fired removal event for: " + combatantNode.getCombatant().getName());
         Class<?> clazz = CombatantDeathEvent.class;
         if (!eventMap.containsKey(clazz)) {
             throw new GameException("Event Map does not contain the specified event: "
@@ -70,7 +69,6 @@ public class BattleEventBus {
      * @throws GameException
      */
     public void fireOnTurnEvent(CombatantNode combatantNode) throws GameException {
-        System.out.println("Fired on turn event for: " + combatantNode.getCombatant().getName());
         Class<?> clazz = OnTurnEvent.class;
         if (!eventMap.containsKey(clazz)) {
             throw new GameException("Event Map does not contain the specified event: " 
@@ -85,7 +83,6 @@ public class BattleEventBus {
     }
     
     public void fireOnActionEvent(CombatantNode actor, BattleAction action, List<CombatantNode> targets) throws GameException {
-        System.out.println("Fired action event for: " + actor.getCombatant().getName());
         Class<?> clazz = ActionEvent.class;
         if (!eventMap.containsKey(clazz)) {
             throw new GameException("Event Map does not contain the specified event: "
@@ -102,7 +99,6 @@ public class BattleEventBus {
     }
 
     public void fireTargetSelectionEvent(BattleAction action) throws GameException {
-        System.out.println("Fired TargetSelection event with action:  " + action);
         Class<?> clazz = TargetSelectionEvent.class;
         if (!eventMap.containsKey(clazz)) {
             throw new GameException("Event Map does not contain the specified event: "
@@ -118,7 +114,6 @@ public class BattleEventBus {
     }
     
     public void fireReceivedActionEvent(BattleAction action, CombatantNode target) throws GameException {
-        System.out.println("Fired Received Action event with target:  " + target + " Action: " + action);
         Class<?> clazz = ReceivedActionEvent.class;
         if (!eventMap.containsKey(clazz)) {
             throw new GameException("Event Map does not contain the specified event: "

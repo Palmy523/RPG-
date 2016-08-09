@@ -12,30 +12,33 @@ import game.battle.component.BattleStateModel;
 import component.state.GameStateModel;
 import component.user.User;
 import de.lessvoid.nifty.Nifty;
-import static game.Main.app;
+import static game.Game.app;
+import game.battle.graphics.CombatantNode;
+import game.battle.graphics.animation.attack.BasicSlashAnimation;
 
 /**
- * Main app entry point.
+ * Game app entry point.
  *
  * @author dpalmiter
  */
-public class Main extends SimpleApplication {
+public class Game extends SimpleApplication {
 
-    public static Main app;
+    public static Game app;
+    public static GameState gameState;
     private Nifty nifty;
-    public GameState state;
     public StateManager manager;
     public static String unshadedMat = "Common/MatDefs/Misc/Unshaded.j3md";
     public static int screenWidth = 1900;
     public static int screenHeight = 900;
     private static boolean displayStats = true;
     private static boolean displayFps = true;
+    private static boolean isTesting = false;
 
     /**
      * If I need to explain this, you are already lost.
      */
     public static void main(String[] args) {
-        app = new Main();
+        app = new Game();
         //app.showStartupMenu();
         app.setShowSettings(false);
         AppSettings settings = new AppSettings(true);
@@ -52,18 +55,38 @@ public class Main extends SimpleApplication {
      */
     @Override
     public void simpleInitApp() {
-        //Get the data for the user and populate the game state.
-        initUserState("0");
+        if (!isTesting) {
+            //Get the data for the user and populate the game state.
+            initUserState("0");
 
-        //Init the Nifty class for menu creation.
-        initNifty();
+            //Init the Nifty class for menu creation.
+            initNifty();
 
-        //Initialize the StateManager and load the start menu.
-        manager = new StateManager(this);
-        manager.loadStartMenu();
+            //Initialize the StateManager and load the start menu.
+            manager = new StateManager(this);
+            manager.loadStartMenu();
 
-        //disable the fly cam
-        app.flyCam.setEnabled(false);
+            //disable the fly cam
+            app.flyCam.setEnabled(false);
+        } else {
+            //Place expirimental code here.
+            Combatant ally1 = new Combatant();
+            ally1.setId("0");
+            ally1.setMaxHealth(100);
+            ally1.setCurrentHealth(100);
+            ally1.setName("Dudeman");
+            ally1.setMaxMana(999);
+            ally1.setCurrentMana(999);
+            ally1.setMaxEND(999);
+            ally1.setCurrentEND(999);
+            ally1.setSPD(1);
+            ally1.setATK(10);
+            CombatantNode node = new CombatantNode(ally1, "Whatev...");
+            this.rootNode.attachChild(node);
+            this.getStateManager().attach(node.getAttackAnimation());
+        }
+        
+        
 
     }
 
@@ -87,7 +110,7 @@ public class Main extends SimpleApplication {
      * @return a default testing material.
      */
     public Material getUnshadedMat() {
-        return new Material(getAssetManager(), Main.unshadedMat);
+        return new Material(getAssetManager(), Game.unshadedMat);
     }
 
     /**
@@ -98,7 +121,7 @@ public class Main extends SimpleApplication {
      * @param userId the userId of the person to initialize the GameState for.
      */
     private void initUserState(String userId) {
-        state = new GameState();
+        gameState = new GameState(userId);
         GameStateModel gameStateModel = new GameStateModel();
         BattleStateModel battleStateModel = new BattleStateModel();
 
@@ -132,7 +155,7 @@ public class Main extends SimpleApplication {
         battleStateModel.getAllys().add(ally2);
 
         Combatant ally3 = new Combatant();
-                ally3.setId("2");
+        ally3.setId("2");
         ally3.setMaxHealth(100);
         ally3.setCurrentHealth(20);
         ally3.setName("Crappy");
@@ -213,13 +236,13 @@ public class Main extends SimpleApplication {
         enemy4.setType(CombatantType.Enemy);
         battleStateModel.getEnemies().add(enemy4);
 
-        state.setBattleStateModel(battleStateModel);
-        state.setModel(gameStateModel);
+        gameState.setBattleStateModel(battleStateModel);
+        gameState.setModel(gameStateModel);
 
     }
 
     /**
-     * Initializes nifty for display of menus in the game and sets to Main nifty
+     * Initializes nifty for display of menus in the game and sets to Game nifty
      * instance.
      */
     private void initNifty() {
@@ -232,5 +255,13 @@ public class Main extends SimpleApplication {
 
     public Nifty getNifty() {
         return nifty;
+    }
+
+    public static GameState getGameState() {
+        return gameState;
+    }
+
+    public static void setGameState(GameState gameState) {
+        Game.gameState = gameState;
     }
 }

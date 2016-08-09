@@ -22,19 +22,20 @@ import game.battle.menu.BattleWonMenu;
 public class StateManager {
 
     private static StateManager instance;
-    private Main app;
+    private Game app;
     private AppStateManager manager;
     private Nifty nifty;
+    private GameState gameState;
 
     public StateManager(Application app) {
-        this.app = (Main) app;
+        this.app = (Game) app;
         manager = app.getStateManager();
         nifty = this.app.getNifty();
     }
 
     public void loadStartMenu() {
         MainMenuState mainMenuState = new MainMenuState();
-        GameState.getInstance().setCurrentState(mainMenuState);
+        Game.getGameState().setCurrentState(mainMenuState);
         manager.attach(mainMenuState);
     }
 
@@ -42,7 +43,7 @@ public class StateManager {
         manager = app.getStateManager();
         BattleState state = new BattleState(battleModel);
         manager.attach(state);
-        GameState.getInstance().setCurrentState(state);
+        Game.getGameState().setCurrentState(state);
     }
     
     public void loadBattleLostState(BattleState state) {
@@ -53,7 +54,11 @@ public class StateManager {
     }
     
     public void loadBattleWonState(BattleState state) {
-        nifty.exit();
+        try {
+            nifty.exit();
+        } catch (NullPointerException e) {
+            System.out.println("Nifty screen is null");
+        }
         state.setEnabled(false);
         AudioManager.getInstance().playBackgroundMusic(new AudioNode(app.getAssetManager(),
                 "Sounds/Music/Event/Suikoden 1 - Joy Joy Time.ogg"));
@@ -62,7 +67,7 @@ public class StateManager {
 
     public static StateManager getStateManager() {
         if (instance == null) {
-            instance = new StateManager(Main.app);
+            instance = new StateManager(Game.app);
         }
         return instance;
     }
