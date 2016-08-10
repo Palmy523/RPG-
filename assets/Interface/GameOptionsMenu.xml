@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<nifty xmlns="http://nifty-gui.sourceforge.net/nifty.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://nifty-gui.sourceforge.net/nifty.xsd http://nifty-gui.sourceforge.net/nifty.xsd">
+    
+    <useStyles filename="nifty-default-styles.xml" />
+    <useControls filename="nifty-default-controls.xml" />
+    
+    <screen id="options" controller="game.state.menu.OptionsMenuState">
+        <layer id="foreground" childLayout="center">
+            <panel id="panel_background" backgroundColor="#000000FF" padding="300" width= "100%" height="100%" childLayout="vertical">
+                <panel id="battle_options_panel" margin="20" padding="0" backgroundColor="#a9a9a988" height="400" width ="200" align="center" childLayout="vertical">
+                    <panel id="battle_options_header" padding="0" backgroundColor="#797D7Dff" align="center" height="25" width="200" childLayout="center">
+                        <control name="label" color="#000000FF" align="center" valign="top" text="Battle Options:"></control>
+                    </panel>
+                    <panel id="battle_options_controls" padding="0" childLayout="vertical">
+                        
+                        <control id="Battle_Progress_Group" name="radioButtonGroup"/>
+                        <panel childLayout="vertical">
+                            <control name="label" align="center" margin="5" text="Battle Progress Style" />
+                            <panel childLayout="vertical" width="100%" backgroundColor="#8001" paddingLeft="7px" paddingRight="7px" paddingTop="4px" paddingBottom="4px" >
+                                <effect>
+                                    <onActive name="border" color="#0008" />
+                                </effect>
+                                <panel childLayout="horizontal">
+                                    <control name="label" text="Active" width="60px" />
+                                    <control name="radioButton" id="active" group="Battle_Progress_Group" />
+                                </panel>
+                                <panel childLayout="horizontal">
+                                    <control name="label" text="Wait" width="60px" />
+                                    <control name="radioButton" id="wait" group="Battle_Progress_Group" />
+                                </panel>
+                            </panel>
+                        </panel>
+                        
+                        <panel id="pauseATB_panel" padding="10" childLayout="horizontal">
+                            <control name="label" color="#ffffffff" align="left" width="150" text="Pause ATB On Action"/>
+                            <control id="checkbox_pauseATB" name="checkbox" align="right" datatype="boolean" default="false"/>
+                        </panel>
+                        
+                        <panel id="cursor_memory_panel" padding="10" childLayout="horizontal">
+                            <control name="label" color="#ffffffff" align="left" width="150" text="Cursor Memory"/>
+                            <control id="checkbox_cursorMemory" name="checkbox" align="right" datatype="boolean" checked="true" default="true"/>
+                        </panel>
+                        
+                    </panel>
+
+                </panel>
+                <panel id="exit_panel" width="100%" margin="20" childLayout="center">
+                    <control id="go_back" label="Go Back" align="center" name="button"></control>
+                </panel>
+            </panel>
+        </layer>
+    </screen>
+
+</nifty>

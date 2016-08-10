@@ -14,6 +14,7 @@ import game.battle.BattleState;
 import game.state.menu.MainMenuState;
 import game.battle.menu.BattleLostMenu;
 import game.battle.menu.BattleWonMenu;
+import game.state.menu.OptionsMenuState;
 
 /**
  *
@@ -29,14 +30,23 @@ public class StateManager {
 
     public StateManager(Application app) {
         this.app = (Game) app;
+        gameState = Game.getGameState();
         manager = app.getStateManager();
         nifty = this.app.getNifty();
     }
 
     public void loadStartMenu() {
+        manager.detach(gameState.getCurrentState());
         MainMenuState mainMenuState = new MainMenuState();
         Game.getGameState().setCurrentState(mainMenuState);
         manager.attach(mainMenuState);
+    }
+    
+    public void loadOptionsMenu() {
+        nifty.exit();
+        OptionsMenuState optionsMenuState = new OptionsMenuState();
+        Game.getGameState().setCurrentState(optionsMenuState);
+        manager.attach(optionsMenuState);
     }
 
     public void loadBattle(BattleStateModel battleModel) {
@@ -50,7 +60,10 @@ public class StateManager {
         state.setEnabled(false);
         AudioManager.getInstance().playBackgroundMusic(new AudioNode(app.getAssetManager(), 
                 "Sounds/Music/Character Themes and Atmospheric/Suikoden 1 - This is Just a Rumor.ogg"));
-        manager.attach(new BattleLostMenu());
+        BattleLostMenu wahWahWah = new BattleLostMenu();
+        gameState.setCurrentState(wahWahWah);
+        manager.attach(wahWahWah);
+        manager.detach(state);
     }
     
     public void loadBattleWonState(BattleState state) {
@@ -62,7 +75,21 @@ public class StateManager {
         state.setEnabled(false);
         AudioManager.getInstance().playBackgroundMusic(new AudioNode(app.getAssetManager(),
                 "Sounds/Music/Event/Suikoden 1 - Joy Joy Time.ogg"));
-        manager.attach(new BattleWonMenu());
+        BattleWonMenu wonState = new BattleWonMenu();
+        gameState.setCurrentState(wonState);
+        manager.attach(wonState);
+        manager.detach(state);
+    }
+    
+    public void loadDoSomethingElse() {
+        nifty.exit();
+        Game.app.getFlyByCamera().setEnabled(true);
+        AudioNode node = new AudioNode(Game.app.getAssetManager(), "Sounds/Music/Battle Music/Battle.ogg");
+        node.setPositional(false);
+        AudioManager.getInstance().playBackgroundMusic(node);
+        DoSomethingElseState state = new DoSomethingElseState();
+        gameState.setCurrentState(state);
+        manager.attach(state);
     }
 
     public static StateManager getStateManager() {

@@ -5,11 +5,11 @@
 package game;
 
 import com.jme3.app.Application;
-import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import game.battle.component.BattleStateModel;
 import component.state.GameStateModel;
+import component.user.GameOptions;
 import game.state.AbstractGameState;
 import game.state.menu.MainMenuState;
 
@@ -28,6 +28,7 @@ public class GameState extends AbstractGameState {
     private static GameState instance;
     private static AppState currentState;
     private static BattleStateModel battleStateModel;
+    private GameOptions options = new GameOptions();
     
     
     public GameState(String userId) {
@@ -89,6 +90,22 @@ public class GameState extends AbstractGameState {
 
     public void setCurrentState(AppState currentState) {
         GameState.currentState = currentState;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public GameOptions getOptions() {
+        return options;
+    }
+
+    public void setOptions(GameOptions options) {
+        this.options = options;
     }
     
     

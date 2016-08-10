@@ -187,4 +187,14 @@ public class CombatantNode extends Node implements Moves, Attacks {
     public AbstractAnimation getAttackAnimation() {
         return new BasicSlashAnimation(sword);
     }
+
+    public Sword getSword() {
+        return sword;
+    }
+
+    public void setSword(Sword sword) {
+        this.sword = sword;
+    }
+    
+    
 }

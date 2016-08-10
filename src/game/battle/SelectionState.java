@@ -41,11 +41,13 @@ public class SelectionState extends AbstractAppState {
     private CombatantNode target;
     private BattleAction action;
     private ActionListener listener;
+    private boolean rememberCursorSelection;
 
     public SelectionState(BattleState state) {
         this.state = state;
         this.scene = state.getScene();
         registerControls();
+        rememberCursorSelection = Game.getGameState().getOptions().isCursorMemory();
     }
 
     @Override
@@ -100,6 +102,9 @@ public class SelectionState extends AbstractAppState {
             }
         } else {
             Game.app.getInputManager().removeListener(listener);
+            if (!rememberCursorSelection) {
+                targetSelected = 0;
+            }
             if (target != null) {
                 target.select(false);
             }

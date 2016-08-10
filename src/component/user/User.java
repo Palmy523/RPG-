@@ -4,10 +4,25 @@
  */
 package component.user;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Dave
  */
-public class User {
+public class User implements Serializable {
+    
+    private String id;
+    private String userName;
+    private String firstName;
+    private String middleInit;
+    private String lastName;
+    private GameOptions options;
+    
+    public User(String id) {
+        this.id = id;
+    }
+    
+    
     
 }

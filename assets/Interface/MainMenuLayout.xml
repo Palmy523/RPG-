@@ -10,20 +10,25 @@
         <layer id="foreground" childLayout="center">
             <panel id="panel_background" backgroundColor="#000000ff" padding="100" width= "100%" height="100%" childLayout="center">
                 <control name="label" valign="top" color="#ffffffff" text="Crossing Swords ver 0.1"></control>
-               <panel id="panel_center" backgroundColor="#a9a9a9ff" width="500" height="300" childLayout="center">
-                   <panel id="button_panel_1" height="25%" valign="top" childLayout="center">
-                        <control id="play" name="button" valign="bottom" label="Play" />
-                   </panel>
-                   
-                   <panel id="button_panel_center" height="50%" valign="bottom" childLayout="center">
-                       <control id="playMusic" name="button" width="200" valign="center" label="Do Something Else"/>
-                   </panel>
-                   
-                   <panel id="button_panel_2" height="25%" padding="5" valign="center" childLayout="center">
-                        <control id="exit" name="button" valign="top" label="Exit"/>
+               <panel id="panel_center" backgroundColor="#a9a9a988" width="500" height="300" childLayout="vertical">
+                   <panel id="button_panel_1" height="25%" width="100%" valign="top" childLayout="center">
+                        <control id="play" name="button" label="Play" />
                    </panel>
 
-                </panel>
+                   <panel id="button_panel_3" height="25%" width="100%" childLayout="center">
+                       <control id="options" name="button" label="Options"/>
+                   </panel>
+                   
+                   <panel id="button_panel_2" height="25%" width="100%" childLayout="center">
+                       <control id="exit" name="button" label="Exit"/>
+                   </panel>
+                   
+                                      
+                   <panel id="button_panel_center" height="25%" width="100%" childLayout="center">
+                       <control id="doSomethingElse" width="200" name="button" label="Do Something Else"/>
+                   </panel>
+                   
+               </panel>
                 <!-- 
 
                 <panel id="panel_middle" backgroundColor="#1240abff" width="*" height="33%" childLayout="center">

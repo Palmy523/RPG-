@@ -14,7 +14,6 @@ import component.user.User;
 import de.lessvoid.nifty.Nifty;
 import static game.Game.app;
 import game.battle.graphics.CombatantNode;
-import game.battle.graphics.animation.attack.BasicSlashAnimation;
 
 /**
  * Game app entry point.
@@ -124,8 +123,8 @@ public class Game extends SimpleApplication {
         gameState = new GameState(userId);
         GameStateModel gameStateModel = new GameStateModel();
         BattleStateModel battleStateModel = new BattleStateModel();
-
-        User user = new User();
+        
+        User user = new User("0");
         gameStateModel.setUser(user);
 
         Combatant ally1 = new Combatant();

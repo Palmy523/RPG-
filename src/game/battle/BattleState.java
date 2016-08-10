@@ -11,6 +11,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.audio.AudioNode;
 import component.battle.combatant.Combatant;
 import component.battle.combatant.Combatant.CombatantType;
+import component.user.GameOptions.BattleMode;
 import game.battle.component.BattleStateModel;
 import game.Game;
 import game.StateManager;
@@ -32,8 +33,6 @@ import game.battle.graphics.animation.ActionAnimation;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -57,6 +56,7 @@ public class BattleState extends AbstractAppState {
     private CombatantNode enemyTurnNode;
     private List<CombatantNode> combatantRemovalList;
     private boolean pauseATBUpdate = false;
+    private BattleMode battleMode;
     
     private boolean allyTurnProcessing;
     private boolean enemyTurnProcessing;
@@ -70,6 +70,7 @@ public class BattleState extends AbstractAppState {
         registerHandlers();
         BattleManager.getInstance().setBattleState(this);
         instance = this;
+        battleMode = Game.getGameState().getOptions().getBattleMode();
     }
 
     private void registerHandlers() {
@@ -79,13 +80,16 @@ public class BattleState extends AbstractAppState {
                 OnTurnEvent event = (OnTurnEvent) e;
                 CombatantNode node = event.getCombatantNode();
                 CombatantType type = node.getCombatant().getType();
-
+                
                 if (type == CombatantType.Ally) {
                     if (!turnQueue.contains(node) && node != currentTurnNode) {
                         turnQueue.add(node);
                     }
 
                     if (!allyTurnProcessing) {
+                        if(battleMode == BattleMode.WAIT) {
+                            pauseATBUpdate(true);
+                        }
                         setAllyTurnProcessing(true);
                         currentTurnNode = (CombatantNode) turnQueue.poll();
                         initiateTurn(currentTurnNode);
@@ -211,18 +215,19 @@ public class BattleState extends AbstractAppState {
     }
 
     public void processCombatantAction(CombatantNode node, BattleAction action) {
+        if (Game.getGameState().getOptions().isPauseATBOnAction()) {
+            this.pauseATBUpdate(true);
+        }
         ActionAnimation animation = new ActionAnimation(action);
         this.manager.attach(animation);
     }
 
-    public boolean isATBPaused() {
-        return pauseATBUpdate;
-    }
-    
-    public void pauseATBUpdate(boolean paused) {
-        this.pauseATBUpdate = paused;
-    }
-
+    /**
+     * Resets a players state, should be used after a player has finished 
+     * enacting a turn.
+     * 
+     * @param node the player node to reset.
+     */
     public void resetState(CombatantNode node) {
         node.getAtbGauge().clearFill();
         if (node.getCombatant().getType() == Combatant.CombatantType.Enemy) {
@@ -236,7 +241,18 @@ public class BattleState extends AbstractAppState {
             selectionState.setEnabled(false);
             actionBarState.setEnabled(false);
         }
+        this.pauseATBUpdate(false);
     }
+
+    public boolean isATBPaused() {
+        return pauseATBUpdate;
+    }
+    
+    public void pauseATBUpdate(boolean paused) {
+        this.pauseATBUpdate = paused;
+    }
+
+
 
     public void loadTargetSelectionState(BattleAction action) {
         actionBarState.setEnabled(false);

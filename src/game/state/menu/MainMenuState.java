@@ -4,17 +4,14 @@
  */
 package game.state.menu;
 
-import com.jme3.app.Application;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.audio.AudioNode;
 import game.battle.component.BattleStateModel;
 import controller.menu.AbstractMenuController;
-import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
 import game.Game;
 import game.audio.AudioManager;
-import game.GameState;
 import game.StateManager;
 
 /**
@@ -30,7 +27,6 @@ public class MainMenuState extends AbstractMenuController {
         
     @Override
     public void stateDetached(AppStateManager manager) {
-        System.out.println("DETACHED>>>>");
     }
         
     @Override
@@ -40,7 +36,6 @@ public class MainMenuState extends AbstractMenuController {
 
     @Override
     public void onEndScreen() {
-        System.out.println("SCREEN ENDED");
         super.onEndScreen();
     }
     
@@ -66,10 +61,13 @@ public class MainMenuState extends AbstractMenuController {
         System.exit(0);
     }
     
-    @NiftyEventSubscriber(id="playMusic")
+    @NiftyEventSubscriber(id="doSomethingElse")
     public void playMusic(String id, ButtonClickedEvent event) {
-        AudioNode node = new AudioNode(Game.app.getAssetManager(), "Sounds/Battle.ogg");
-        node.setPositional(false);
-        AudioManager.getInstance().playBackgroundMusic(node);
+        StateManager.getStateManager().loadDoSomethingElse();
+    }
+    
+    @NiftyEventSubscriber(id="options")
+    public void openOptionsMenu(String id, ButtonClickedEvent event) {
+        StateManager.getStateManager().loadOptionsMenu();
     }
 }
